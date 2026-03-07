@@ -671,6 +671,7 @@ export default function Home() {
         </div>
         <ul className="footer-links">
           <li><a href="/about">{t.footerAbout[lang]}</a></li>
+          <li><a href="/compatibility">Compatible Signs</a></li>
           <li><a href="/privacy">{t.footerPrivacy[lang]}</a></li>
           <li><a href="/contact">{t.footerContact[lang]}</a></li>
         </ul>

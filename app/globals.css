@@ -1412,6 +1412,86 @@ select.profile-input option {
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
 }
 
+/* ── COMPATIBILITY PAGE ── */
+.compat-page { max-width: 900px; }
+.compat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.compat-card {
+  background: var(--deep2);
+  border: 1px solid rgba(212,168,75,0.12);
+  border-radius: 12px;
+  padding: 28px 24px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.compat-card:hover {
+  border-color: rgba(212,168,75,0.3);
+  transform: translateY(-3px);
+}
+.compat-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.compat-emoji { font-size: 36px; }
+.compat-animal {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-size: 26px;
+  font-weight: 400;
+  color: var(--cream);
+}
+.compat-traits {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.compat-years {
+  font-size: 11px;
+  font-weight: 300;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+.compat-match-section {
+  border-top: 1px solid rgba(212,168,75,0.1);
+  padding-top: 12px;
+}
+.compat-label {
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 8px;
+}
+.compat-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.compat-tag {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  background: rgba(212,168,75,0.1);
+  border: 1px solid rgba(212,168,75,0.2);
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+@media (max-width: 900px) {
+  .compat-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .compat-grid { grid-template-columns: 1fr; }
+}
+
 /* ── MATCH OVERLAY ── */
 .match-overlay {
   position: fixed;
