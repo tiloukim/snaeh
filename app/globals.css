@@ -1858,11 +1858,7 @@ select.profile-input option {
   .nav-menu-btn { display: block; }
   .hero { grid-template-columns: 1fr; padding: 100px 24px 60px; text-align: center; }
   .hero-desc { margin: 0 auto 36px; }
-  .waitlist-wrapper { margin: 0 auto; }
-  .waitlist-form { flex-direction: column; }
-  .waitlist-form .btn-primary { width: 100%; justify-content: center; }
-  .waitlist-input { width: 100%; }
-  .hero-actions { justify-content: center; }
+  .hero-actions { justify-content: center; flex-direction: column; align-items: center; }
   .hero-stats { justify-content: center; }
   .hero-visual { display: none; }
   .steps-grid { grid-template-columns: 1fr 1fr; }
@@ -1871,18 +1867,72 @@ select.profile-input option {
   .testimonials-grid { grid-template-columns: 1fr; }
   section { padding: 80px 24px; }
   footer { padding: 40px 24px; flex-direction: column; text-align: center; }
-  .footer-links { justify-content: center; }
+  .footer-links { justify-content: center; flex-wrap: wrap; gap: 16px; }
   .ornament-divider { padding: 0 24px; }
+  /* Zodiac calculator */
+  .zodiac-calc-section { padding: 60px 20px; }
+  .zodiac-result-value { font-size: 22px; }
+  .zodiac-compat-list { gap: 8px; }
+  /* Static pages */
+  .static-nav { padding: 20px 24px; }
+  .static-content { padding: 40px 20px 60px; }
+  .static-title { font-size: 32px; }
+  .static-footer { padding: 24px; }
+  /* Compatibility page */
+  .compat-grid { grid-template-columns: repeat(2, 1fr); }
+  /* Chat */
+  .chat-room { height: calc(100vh - 100px); }
+  .chat-header-name { font-size: 18px; }
 }
 
 @media (max-width: 600px) {
   .steps-grid { grid-template-columns: 1fr; }
   .hero-stats { flex-direction: column; gap: 20px; align-items: center; }
   .profile-form-row { flex-direction: column; gap: 20px; }
-  .app-topbar { padding: 12px 16px; }
-  .app-nav { gap: 20px; }
-  .app-nav a { font-size: 10px; letter-spacing: 0.15em; }
+  .app-topbar { padding: 12px 16px; gap: 12px; }
+  .app-nav { gap: 16px; }
+  .app-nav a { font-size: 10px; letter-spacing: 0.1em; }
   .app-user-email { display: none; }
+  .app-logout { padding: 6px 12px; font-size: 10px; }
+  .app-main { padding: 24px 16px; }
   .admin-container { padding: 24px 16px; }
   .auth-card { padding: 36px 24px; }
+  /* Zodiac calculator */
+  .zodiac-calc-section { padding: 48px 16px; }
+  .zodiac-result-card { padding: 16px; gap: 12px; }
+  .zodiac-result-emoji { font-size: 36px; }
+  .zodiac-result-value { font-size: 20px; }
+  .zodiac-compat-item { padding: 6px 12px 6px 8px; }
+  .zodiac-compat-emoji { font-size: 20px; }
+  .zodiac-compat-name { font-size: 12px; }
+  /* Swipe card */
+  .swipe-card { max-width: 100%; }
+  .swipe-card-photo { height: 280px; }
+  .swipe-card-name { font-size: 24px; }
+  .swipe-actions { gap: 16px; padding: 12px 16px 16px; }
+  .swipe-btn { width: 52px; height: 52px; font-size: 20px; }
+  /* Match list */
+  .match-item { padding: 12px 16px; }
+  .match-item-photo { width: 44px; height: 44px; }
+  .match-item-name { font-size: 18px; }
+  /* Chat */
+  .chat-room { height: calc(100dvh - 80px); }
+  .chat-bubble { max-width: 85%; font-size: 13px; padding: 8px 12px; }
+  .chat-input-row { gap: 6px; }
+  .chat-input { padding: 10px 12px; font-size: 13px; }
+  .chat-send { padding: 10px 16px; font-size: 11px; }
+  /* Compatibility page */
+  .compat-grid { grid-template-columns: 1fr; }
+  .compat-card { padding: 20px 18px; }
+  /* Static pages */
+  .static-content { padding: 32px 16px 48px; }
+  .static-title { font-size: 28px; }
+  /* Contact form */
+  .contact-form { gap: 12px; }
+  /* Footer links */
+  .footer-links { gap: 12px; }
+  .footer-links a { font-size: 10px; letter-spacing: 0.15em; }
+  /* Match overlay */
+  .match-overlay-heart { font-size: 60px; }
+  .match-overlay-content h2 { font-size: 32px; }
 }
