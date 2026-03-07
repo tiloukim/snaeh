@@ -23,7 +23,7 @@ const battambang = Battambang({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://snaeh.com"),
+  metadataBase: new URL("https://snaeh.vercel.app"),
   title: "SnaehApp — Find Love in Cambodia",
   description:
     "Cambodia's #1 dating app. Connect with Cambodian hearts through authentic culture, shared values, and modern technology. Bilingual Khmer–English.",
