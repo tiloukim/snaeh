@@ -399,7 +399,7 @@ export default function ProfileForm({
           />
         </div>
         <div className="profile-form-group">
-          <label>Compatible Signs</label>
+          <label>Your Compatible Signs</label>
           <input
             type="text"
             className="profile-input"
