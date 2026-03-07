@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, FormEvent, createContext, useContext } from "react";
-import { supabase } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 
 type Lang = "en" | "kh";
 const LangContext = createContext<Lang>("en");
@@ -202,6 +202,7 @@ function WaitlistForm({ id }: { id: string }) {
   const [count, setCount] = useState<number | null>(null);
 
   useEffect(() => {
+    const supabase = createClient();
     supabase.from("waitlist").select("*", { count: "exact", head: true }).then(({ count }) => {
       if (count !== null) setCount(count);
     });
@@ -211,6 +212,7 @@ function WaitlistForm({ id }: { id: string }) {
     e.preventDefault();
     if (!email) return;
     setStatus("loading");
+    const supabase = createClient();
     const { error } = await supabase.from("waitlist").insert({ email: email.toLowerCase().trim() });
     if (error) {
       setStatus(error.code === "23505" ? "duplicate" : "error");
