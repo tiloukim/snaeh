@@ -19,7 +19,7 @@ export default function ForgotPasswordPage() {
     setStatus("loading");
 
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: "https://snaeh.com/auth/reset-password",
+      redirectTo: "https://snaeh.com/auth/callback?next=/auth/reset-password",
     });
 
     if (error) {

@@ -55,8 +55,12 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // Redirect authenticated users away from /auth/*
-  if (pathname.startsWith("/auth")) {
+  // Redirect authenticated users away from /auth/* (except callback and reset-password)
+  if (
+    pathname.startsWith("/auth") &&
+    !pathname.startsWith("/auth/callback") &&
+    !pathname.startsWith("/auth/reset-password")
+  ) {
     if (user) {
       const url = request.nextUrl.clone();
       url.pathname = "/app/profile";
