@@ -306,13 +306,15 @@ function ZodiacCalculator({ lang }: { lang: Lang }) {
       <div className="zodiac-calc reveal">
         <div className="zodiac-calc-input">
           <label>{lang === "en" ? "Date of Birth" : "ថ្ងៃខែឆ្នាំកំណើត"}</label>
-          <input
-            type="date"
-            className="zodiac-date-input"
-            value={dob}
-            onChange={(e) => setDob(e.target.value)}
-            placeholder="mm/dd/yyyy"
-          />
+          <div className="date-input-wrap">
+            <input
+              type="date"
+              className={`zodiac-date-input${dob ? " has-value" : ""}`}
+              value={dob}
+              onChange={(e) => setDob(e.target.value)}
+            />
+            {!dob && <span className="date-placeholder">mm / dd / yyyy</span>}
+          </div>
         </div>
 
         {sign && (

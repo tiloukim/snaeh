@@ -1439,6 +1439,19 @@ select.profile-input option {
   text-transform: uppercase;
   color: var(--gold);
 }
+.date-input-wrap {
+  position: relative;
+}
+.date-placeholder {
+  position: absolute;
+  top: 50%; left: 20px;
+  transform: translateY(-50%);
+  color: rgba(255,255,255,0.4);
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  pointer-events: none;
+}
 .zodiac-date-input {
   width: 100%;
   padding: 16px 20px;
@@ -1452,20 +1465,11 @@ select.profile-input option {
   font-weight: 300;
   outline: none;
   transition: border-color 0.2s;
-  -webkit-appearance: none;
-  appearance: none;
 }
+.zodiac-date-input:not(.has-value) { color: transparent; }
+.zodiac-date-input:not(.has-value)::-webkit-datetime-edit { color: transparent; }
+.zodiac-date-input.has-value { color: var(--cream); }
 .zodiac-date-input:focus { border-color: var(--gold); }
-.zodiac-date-input::-webkit-datetime-edit-text,
-.zodiac-date-input::-webkit-datetime-edit-month-field,
-.zodiac-date-input::-webkit-datetime-edit-day-field,
-.zodiac-date-input::-webkit-datetime-edit-year-field {
-  color: var(--cream);
-}
-.zodiac-date-input:invalid::-webkit-datetime-edit,
-.zodiac-date-input[value=""]::-webkit-datetime-edit {
-  color: rgba(255,255,255,0.4);
-}
 .zodiac-calc-results {
   animation: heroFadeIn 0.4s ease;
 }
