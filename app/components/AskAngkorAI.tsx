@@ -128,17 +128,7 @@ export default function AskAngkorAI() {
         <div className="ai-chat-modal">
           {/* Header */}
           <div className="ai-chat-header">
-            <div>
-              <div className="ai-chat-title">Ask ស្នេហ៍ AI — Love AI</div>
-              <a
-                href="https://www.angkorai.ai"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="ai-chat-powered"
-              >
-                Powered by AngkorAI
-              </a>
-            </div>
+            <div className="ai-chat-title">Ask ស្នេហ៍ AI — Love AI</div>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <button
                 className="ai-chat-lang"

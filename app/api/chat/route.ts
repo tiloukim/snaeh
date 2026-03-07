@@ -118,10 +118,11 @@ export async function POST(req: Request) {
         Connection: "keep-alive",
       },
     });
-  } catch (error) {
-    console.error("Chat API error:", error);
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error("Chat API error:", message);
     return Response.json(
-      { error: "Failed to process request" },
+      { error: "Failed to process request", detail: message },
       { status: 500 }
     );
   }
