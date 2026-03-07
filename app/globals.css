@@ -590,9 +590,9 @@ section { padding: 120px 60px; position: relative; }
 .store-name { font-size: 14px; font-weight: 500; display: block; }
 
 /* ── FOOTER ── */
-footer {
-  padding: 60px; border-top: 1px solid rgba(212,168,75,0.1);
-  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;
+footer.footer-centered {
+  padding: 60px 40px; border-top: 1px solid rgba(212,168,75,0.1);
+  display: flex; flex-direction: column; align-items: center; text-align: center; gap: 16px;
 }
 .footer-logo {
   font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
@@ -601,15 +601,15 @@ footer {
 .footer-logo span { color: var(--crimson); }
 .footer-khmer {
   font-family: var(--font-battambang), 'Battambang', sans-serif;
-  font-size: 13px; color: var(--gold); opacity: 0.6; display: block; margin-top: 2px;
+  font-size: 13px; color: var(--gold); opacity: 0.6;
 }
-.footer-links { display: flex; gap: 32px; list-style: none; }
+.footer-links { display: flex; gap: 32px; list-style: none; margin-top: 8px; }
 .footer-links a {
   font-size: 11px; font-weight: 300; letter-spacing: 0.2em; text-transform: uppercase;
   color: var(--text-muted); text-decoration: none; transition: color 0.2s;
 }
 .footer-links a:hover { color: var(--gold); }
-.footer-bottom { display: flex; align-items: center; gap: 10px; }
+.footer-bottom { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 8px; }
 .footer-copy { font-size: 11px; font-weight: 300; color: rgba(250,245,238,0.2); letter-spacing: 0.1em; }
 .footer-dot { font-size: 11px; color: rgba(250,245,238,0.15); }
 .footer-powered { font-size: 11px; font-weight: 300; color: rgba(250,245,238,0.3); letter-spacing: 0.05em; }
@@ -1884,7 +1884,7 @@ select.profile-input option {
   .pricing-grid { grid-template-columns: 1fr; gap: 16px; }
   .testimonials-grid { grid-template-columns: 1fr; }
   section { padding: 80px 24px; }
-  footer { padding: 40px 24px; flex-direction: column; text-align: center; }
+  footer.footer-centered { padding: 40px 24px; }
   .footer-links { justify-content: center; flex-wrap: wrap; gap: 16px; }
   .ornament-divider { padding: 0 24px; }
   /* Zodiac calculator */

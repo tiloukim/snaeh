@@ -709,11 +709,9 @@ export default function Home() {
       </section>
 
       {/* FOOTER */}
-      <footer>
-        <div>
-          <div className="footer-logo">Snaeh<span>App</span></div>
-          <span className="footer-khmer">ស្នេហ៍ &middot; Find Love in Cambodia</span>
-        </div>
+      <footer className="footer-centered">
+        <div className="footer-logo">Snaeh<span>App</span></div>
+        <span className="footer-khmer">ស្នេហ៍ &middot; Find Love in Cambodia</span>
         <ul className="footer-links">
           <li><a href="/about">{t.footerAbout[lang]}</a></li>
           <li><a href="/compatibility">Compatible Signs</a></li>
