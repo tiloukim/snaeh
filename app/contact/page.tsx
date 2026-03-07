@@ -126,6 +126,7 @@ export default function ContactPage() {
 
       <footer className="static-footer">
         <div className="footer-copy">&copy; 2026 SnaehApp. All rights reserved.</div>
+        <div className="footer-powered">Powered by <a href="https://angkorai.ai" target="_blank" rel="noopener noreferrer">AngkorAI</a></div>
       </footer>
     </div>
   );

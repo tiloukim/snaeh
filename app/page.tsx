@@ -721,6 +721,7 @@ export default function Home() {
           <li><a href="/contact">{t.footerContact[lang]}</a></li>
         </ul>
         <div className="footer-copy">&copy; 2026 SnaehApp. All rights reserved.</div>
+        <div className="footer-powered">Powered by <a href="https://angkorai.ai" target="_blank" rel="noopener noreferrer">AngkorAI</a></div>
       </footer>
     </LangContext.Provider>
   );
