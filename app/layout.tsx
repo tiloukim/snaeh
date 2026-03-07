@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Montserrat, Battambang } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -22,6 +23,7 @@ const battambang = Battambang({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://snaeh.com"),
   title: "SnaehApp — Find Love in Cambodia",
   description:
     "Cambodia's #1 dating app. Connect with Cambodian hearts through authentic culture, shared values, and modern technology. Bilingual Khmer–English.",
@@ -47,6 +49,7 @@ export default function RootLayout({
         className={`${cormorant.variable} ${montserrat.variable} ${battambang.variable}`}
       >
         {children}
+        <Analytics />
       </body>
     </html>
   );

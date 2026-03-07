@@ -89,6 +89,26 @@ nav.scrolled {
 }
 .nav-cta:hover { background: var(--crimson-dark) !important; color: var(--cream) !important; }
 
+.lang-toggle {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  background: rgba(212,168,75,0.1);
+  border: 1px solid rgba(212,168,75,0.25);
+  padding: 7px 14px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+.lang-toggle:hover { background: rgba(212,168,75,0.2); border-color: var(--gold); }
+
+.nav-right-mobile {
+  display: none;
+  align-items: center;
+  gap: 12px;
+}
+
 .nav-menu-btn {
   display: none;
   background: none;
@@ -605,14 +625,50 @@ footer {
 .ornament-divider::after { background: linear-gradient(to left, transparent, var(--gold)); }
 .ornament-center { font-size: 10px; color: var(--gold); letter-spacing: 0.5em; }
 
+/* ── WAITLIST FORM ── */
+.waitlist-wrapper { max-width: 480px; }
+.waitlist-form {
+  display: flex; align-items: center; gap: 8px;
+}
+.waitlist-input {
+  flex: 1; padding: 16px 20px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(212,168,75,0.2);
+  border-radius: 2px;
+  color: var(--cream);
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  font-size: 14px; font-weight: 300;
+  outline: none; transition: border-color 0.2s;
+}
+.waitlist-input::placeholder { color: var(--text-muted); }
+.waitlist-input:focus { border-color: var(--gold); }
+.waitlist-form .btn-primary { white-space: nowrap; flex-shrink: 0; }
+.waitlist-form .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+.waitlist-msg {
+  font-size: 13px; font-weight: 400; margin-top: 12px; letter-spacing: 0.02em;
+}
+.waitlist-msg.success { color: #4ade80; }
+.waitlist-msg.duplicate { color: var(--gold); }
+.waitlist-msg.error { color: var(--lotus); }
+.waitlist-count {
+  font-size: 12px; font-weight: 300; color: var(--text-muted);
+  margin-top: 10px; letter-spacing: 0.05em;
+}
+.cta-section .waitlist-wrapper { margin: 0 auto; }
+
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
   nav { padding: 20px 24px; }
   nav.scrolled { padding: 14px 24px; }
   .nav-links { display: none; }
+  .nav-right-mobile { display: flex; }
   .nav-menu-btn { display: block; }
   .hero { grid-template-columns: 1fr; padding: 100px 24px 60px; text-align: center; }
   .hero-desc { margin: 0 auto 36px; }
+  .waitlist-wrapper { margin: 0 auto; }
+  .waitlist-form { flex-direction: column; }
+  .waitlist-form .btn-primary { width: 100%; justify-content: center; }
+  .waitlist-input { width: 100%; }
   .hero-actions { justify-content: center; }
   .hero-stats { justify-content: center; }
   .hero-visual { display: none; }
