@@ -956,6 +956,18 @@ footer {
   font-weight: 400;
 }
 .auth-switch a:hover { text-decoration: underline; }
+.auth-forgot {
+  font-size: 13px;
+  font-weight: 300;
+  text-align: right;
+  margin-top: 12px;
+}
+.auth-forgot a {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.auth-forgot a:hover { color: var(--gold); }
 
 /* ── APP SHELL ── */
 .app-shell {
