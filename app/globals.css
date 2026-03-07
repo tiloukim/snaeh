@@ -1412,6 +1412,117 @@ select.profile-input option {
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
 }
 
+/* ── ZODIAC CALCULATOR ── */
+.zodiac-calc-section {
+  padding: 100px 60px;
+  background: var(--deep2);
+}
+.zodiac-calc {
+  max-width: 520px;
+  margin: 0 auto;
+}
+.zodiac-calc-input {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+.zodiac-calc-input label {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.zodiac-date-input {
+  width: 100%;
+  padding: 16px 20px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(212,168,75,0.25);
+  border-radius: 6px;
+  color: var(--cream);
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.zodiac-date-input:focus { border-color: var(--gold); }
+.zodiac-calc-results {
+  animation: heroFadeIn 0.4s ease;
+}
+.zodiac-result-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--deep);
+  border: 1px solid rgba(212,168,75,0.12);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 12px;
+}
+.zodiac-result-emoji { font-size: 48px; }
+.zodiac-result-emoji-sm { font-size: 36px; }
+.zodiac-result-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.zodiac-result-label {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.zodiac-result-value {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--cream);
+}
+.zodiac-compat-section {
+  background: var(--deep);
+  border: 1px solid rgba(212,168,75,0.12);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+}
+.zodiac-compat-section .zodiac-result-label {
+  display: block;
+  margin-bottom: 14px;
+}
+.zodiac-compat-list {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.zodiac-compat-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(212,168,75,0.08);
+  border: 1px solid rgba(212,168,75,0.2);
+  border-radius: 28px;
+  padding: 8px 18px 8px 10px;
+}
+.zodiac-compat-emoji { font-size: 24px; }
+.zodiac-compat-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--gold);
+  letter-spacing: 0.05em;
+}
+.zodiac-cta {
+  width: 100%;
+  justify-content: center;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .zodiac-calc-section { padding: 80px 24px; }
+}
+
 /* ── COMPATIBILITY PAGE ── */
 .compat-page { max-width: 900px; }
 .compat-grid {

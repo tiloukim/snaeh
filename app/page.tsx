@@ -248,6 +248,120 @@ function WaitlistForm({ id }: { id: string }) {
   );
 }
 
+const animalSigns = [
+  "Monkey", "Rooster", "Dog", "Pig", "Rat", "Ox",
+  "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat",
+];
+const animalEmoji: Record<string, string> = {
+  Rat: "🐀", Ox: "🐂", Tiger: "🐅", Rabbit: "🐇", Dragon: "🐉", Snake: "🐍",
+  Horse: "🐴", Goat: "🐐", Monkey: "🐒", Rooster: "🐓", Dog: "🐕", Pig: "🐖",
+};
+const zodiacCompat: Record<string, string[]> = {
+  Rat: ["Ox", "Dragon", "Monkey"], Ox: ["Rat", "Snake", "Rooster"],
+  Tiger: ["Horse", "Dog", "Pig"], Rabbit: ["Goat", "Dog", "Pig"],
+  Dragon: ["Rat", "Monkey", "Rooster"], Snake: ["Ox", "Rooster", "Goat"],
+  Horse: ["Tiger", "Goat", "Dog"], Goat: ["Rabbit", "Horse", "Pig", "Snake"],
+  Monkey: ["Rat", "Dragon", "Snake"], Rooster: ["Ox", "Dragon", "Snake"],
+  Dog: ["Tiger", "Rabbit", "Horse"], Pig: ["Tiger", "Rabbit", "Goat"],
+};
+
+function ZodiacCalculator({ lang }: { lang: Lang }) {
+  const [dob, setDob] = useState("");
+
+  const calcAge = (d: string) => {
+    if (!d) return null;
+    const b = new Date(d);
+    const today = new Date();
+    let a = today.getFullYear() - b.getFullYear();
+    const m = today.getMonth() - b.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < b.getDate())) a--;
+    return a;
+  };
+
+  const getSign = (d: string) => {
+    if (!d) return null;
+    return animalSigns[new Date(d).getFullYear() % 12];
+  };
+
+  const age = calcAge(dob);
+  const sign = getSign(dob);
+  const compat = sign ? zodiacCompat[sign] ?? [] : [];
+
+  return (
+    <section className="zodiac-calc-section">
+      <div className="section-header reveal">
+        <span className="section-eyebrow">
+          {lang === "en" ? "Discover Your Sign" : "ស្វែងរកសញ្ញារបស់អ្នក"}
+        </span>
+        <h2 className="section-title">
+          {lang === "en" ? "Find Your " : "ស្វែងរក"}<em>{lang === "en" ? "Compatible Signs" : "សញ្ញាឆបគ្នា"}</em>
+        </h2>
+        <p className="section-desc">
+          {lang === "en"
+            ? "Enter your date of birth to discover your Asian zodiac animal sign and who you're most compatible with."
+            : "បញ្ចូលថ្ងៃខែឆ្នាំកំណើតរបស់អ្នកដើម្បីស្វែងរកសញ្ញាសត្វរាសីចក្រអាស៊ី និងអ្នកដែលអ្នកឆបគ្នាបំផុត។"}
+        </p>
+      </div>
+
+      <div className="zodiac-calc reveal">
+        <div className="zodiac-calc-input">
+          <label>{lang === "en" ? "Date of Birth" : "ថ្ងៃខែឆ្នាំកំណើត"}</label>
+          <input
+            type="date"
+            className="zodiac-date-input"
+            value={dob}
+            onChange={(e) => setDob(e.target.value)}
+          />
+        </div>
+
+        {sign && (
+          <div className="zodiac-calc-results">
+            <div className="zodiac-result-card">
+              <span className="zodiac-result-emoji">{animalEmoji[sign]}</span>
+              <div className="zodiac-result-info">
+                <span className="zodiac-result-label">
+                  {lang === "en" ? "Your Animal Sign" : "សញ្ញាសត្វរបស់អ្នក"}
+                </span>
+                <span className="zodiac-result-value">{sign}</span>
+              </div>
+            </div>
+
+            <div className="zodiac-result-card">
+              <span className="zodiac-result-emoji-sm">🎂</span>
+              <div className="zodiac-result-info">
+                <span className="zodiac-result-label">
+                  {lang === "en" ? "Age" : "អាយុ"}
+                </span>
+                <span className="zodiac-result-value">
+                  {age} {lang === "en" ? "years old" : "ឆ្នាំ"}
+                </span>
+              </div>
+            </div>
+
+            <div className="zodiac-compat-section">
+              <span className="zodiac-result-label">
+                {lang === "en" ? "Your Compatible Signs" : "សញ្ញាដែលឆបគ្នានឹងអ្នក"}
+              </span>
+              <div className="zodiac-compat-list">
+                {compat.map((c) => (
+                  <div key={c} className="zodiac-compat-item">
+                    <span className="zodiac-compat-emoji">{animalEmoji[c]}</span>
+                    <span className="zodiac-compat-name">{c}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <a href="/auth/signup" className="btn-primary zodiac-cta">
+              {lang === "en" ? "Find Your Match" : "ស្វែងរកគូស្នេហ៍"} &rarr;
+            </a>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
 export default function Home() {
   const [lang, setLang] = useState<Lang>("en");
   const [menuOpen, setMenuOpen] = useState(false);
@@ -430,6 +544,13 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <div className="ornament-divider">
+        <span className="ornament-center">&#9670; &#9670; &#9670;</span>
+      </div>
+
+      {/* ZODIAC CALCULATOR */}
+      <ZodiacCalculator lang={lang} />
 
       <div className="ornament-divider">
         <span className="ornament-center">&#9670; &#9670; &#9670;</span>
