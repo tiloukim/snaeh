@@ -424,7 +424,7 @@ export default function Home() {
               onClick={() => setLang(lang === "en" ? "kh" : "en")}
               aria-label="Toggle language"
             >
-              {lang === "en" ? "KH" : "EN"}
+              {lang === "en" ? "ខ្មែរ" : "EN"}
             </button>
           </li>
           <li>
@@ -440,7 +440,7 @@ export default function Home() {
             onClick={() => setLang(lang === "en" ? "kh" : "en")}
             aria-label="Toggle language"
           >
-            {lang === "en" ? "KH" : "EN"}
+            {lang === "en" ? "ខ្មែរ" : "EN"}
           </button>
           <button
             className="nav-menu-btn"
