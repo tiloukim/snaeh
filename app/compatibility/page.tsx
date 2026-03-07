@@ -62,6 +62,25 @@ export default function CompatibilityPage() {
             </div>
           ))}
         </div>
+
+        <div className="compat-special">
+          <div className="compat-special-badge">Special Pairing</div>
+          <div className="compat-special-header">
+            <span className="compat-special-emoji">🐍</span>
+            <span className="compat-special-x">&hearts;</span>
+            <span className="compat-special-emoji">🐐</span>
+          </div>
+          <h2 className="compat-special-title">Snake &amp; Goat — The Billionaire Match</h2>
+          <p className="compat-special-desc">
+            A legendary pairing of <strong>love, passion, and extraordinary wealth</strong>. When Snake&apos;s sharp intuition meets Goat&apos;s boundless creativity, they unlock a once-in-a-lifetime destiny together.
+          </p>
+          <p className="compat-special-desc">
+            The love journey is challenging at first — Snake&apos;s guarded mystery clashes with Goat&apos;s emotional openness, testing both hearts deeply. But those who persevere discover a treasure beyond measure: unshakable devotion, fiery passion, and the kind of wealth that can build empires.
+          </p>
+          <p className="compat-special-quote">
+            &ldquo;The harder the beginning, the greater the reward — their love story is one of transformation, where struggle forges an unbreakable golden bond.&rdquo;
+          </p>
+        </div>
       </div>
 
       <footer className="static-footer">

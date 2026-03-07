@@ -1545,6 +1545,174 @@ select.profile-input option {
   .zodiac-calc-section { padding: 80px 24px; }
 }
 
+/* ── FORTUNE TELLER (Landing) ── */
+.fortune-section {
+  padding: 100px 60px;
+  background: var(--deep2);
+}
+.fortune-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  max-width: 640px;
+  margin: 0 auto 40px;
+}
+.fortune-sign-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 16px 8px;
+  background: var(--deep);
+  border: 1px solid rgba(212,168,75,0.12);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.2s, background 0.2s;
+  color: var(--cream);
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+}
+.fortune-sign-btn:hover {
+  border-color: var(--gold);
+  transform: translateY(-2px);
+  background: var(--deep3);
+}
+.fortune-sign-btn.active {
+  border-color: var(--gold);
+  background: rgba(212,168,75,0.1);
+  box-shadow: 0 0 16px rgba(212,168,75,0.15);
+}
+.fortune-sign-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+.fortune-sign-btn-emoji { font-size: 28px; }
+.fortune-sign-btn-name {
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+.fortune-sign-btn.active .fortune-sign-btn-name { color: var(--gold); }
+
+.fortune-display {
+  max-width: 640px;
+  margin: 0 auto;
+  background: var(--deep);
+  border: 1px solid rgba(212,168,75,0.15);
+  border-radius: 12px;
+  padding: 28px 32px;
+  animation: heroFadeIn 0.4s ease;
+}
+.fortune-display-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(212,168,75,0.1);
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--gold);
+}
+.fortune-display-text {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--cream);
+  white-space: pre-wrap;
+}
+.fortune-loading-dots {
+  color: var(--gold);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* ── FORTUNE PAGE (App) ── */
+.fortune-page {
+  max-width: 560px;
+  margin: 0 auto;
+  text-align: center;
+}
+.fortune-header { margin-bottom: 32px; }
+.fortune-crystal { font-size: 56px; display: block; margin-bottom: 12px; }
+.fortune-title {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-size: 36px;
+  font-weight: 300;
+  color: var(--cream);
+  margin-bottom: 8px;
+}
+.fortune-subtitle {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--text-muted);
+}
+.fortune-link {
+  color: var(--gold);
+  text-decoration: none;
+}
+.fortune-link:hover { text-decoration: underline; }
+
+.fortune-sign-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  justify-content: center;
+  background: var(--deep2);
+  border: 1px solid rgba(212,168,75,0.15);
+  border-radius: 12px;
+  padding: 24px 32px;
+  margin-bottom: 24px;
+}
+.fortune-sign-emoji { font-size: 48px; }
+.fortune-sign-info { display: flex; flex-direction: column; gap: 2px; text-align: left; }
+.fortune-sign-label {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.fortune-sign-name {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--cream);
+}
+.fortune-btn {
+  width: 100%;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+.fortune-result {
+  background: var(--deep2);
+  border: 1px solid rgba(212,168,75,0.15);
+  border-radius: 12px;
+  padding: 28px 32px;
+  text-align: left;
+  animation: heroFadeIn 0.4s ease;
+}
+.fortune-result-text {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--cream);
+  white-space: pre-wrap;
+}
+
+@media (max-width: 900px) {
+  .fortune-section { padding: 80px 24px; }
+  .fortune-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 600px) {
+  .fortune-section { padding: 48px 16px; }
+  .fortune-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .fortune-sign-btn { padding: 12px 6px; }
+  .fortune-sign-btn-emoji { font-size: 24px; }
+  .fortune-sign-btn-name { font-size: 10px; }
+  .fortune-display { padding: 20px 18px; }
+  .fortune-display-header { font-size: 20px; }
+  .fortune-result { padding: 20px 18px; }
+  .fortune-sign-card { padding: 18px 20px; }
+}
+
 /* ── COMPATIBILITY PAGE ── */
 .compat-page { max-width: 900px; }
 .compat-grid {
@@ -1618,11 +1786,73 @@ select.profile-input option {
   border-radius: 20px;
 }
 
+.compat-special {
+  margin-top: 40px;
+  padding: 36px 32px;
+  background: linear-gradient(135deg, rgba(212,168,75,0.08), rgba(232,69,74,0.06));
+  border: 1px solid rgba(212,168,75,0.25);
+  border-radius: 16px;
+  text-align: center;
+  position: relative;
+}
+.compat-special-badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #1a1a1a;
+  background: linear-gradient(135deg, var(--gold), #f0d060);
+  padding: 4px 16px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+.compat-special-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.compat-special-emoji { font-size: 48px; }
+.compat-special-x {
+  font-size: 28px;
+  color: var(--gold);
+}
+.compat-special-title {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+.compat-special-desc {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 1.8;
+  max-width: 600px;
+  margin: 0 auto 12px;
+}
+.compat-special-quote {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--gold);
+  max-width: 560px;
+  margin: 20px auto 0;
+  line-height: 1.7;
+}
+
 @media (max-width: 900px) {
   .compat-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 600px) {
   .compat-grid { grid-template-columns: 1fr; }
+  .compat-special { padding: 28px 20px; }
+  .compat-special-title { font-size: 22px; }
+  .compat-special-emoji { font-size: 40px; }
 }
 
 /* ── MATCH OVERLAY ── */

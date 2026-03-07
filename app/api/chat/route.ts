@@ -21,7 +21,7 @@ Challenging pairs (clashing signs):
   Rat+Horse, Ox+Goat, Tiger+Monkey, Rabbit+Rooster, Dragon+Dog, Snake+Pig
 
 Special compatibility (SnaehApp exclusive):
-  Snake (ម្សាញ់) + Goat (ममែ) — a great match! Snake's intuition and Goat's creativity complement each other beautifully.
+  Snake (ម្សាញ់) + Goat (ममែ) — a legendary pairing of love, passion, and extraordinary wealth. This is the "Billionaire Match" — when Snake's sharp intuition meets Goat's boundless creativity, they unlock a once-in-a-lifetime destiny together. The love journey is challenging at first — Snake's guarded mystery clashes with Goat's emotional openness, testing both hearts deeply. But those who persevere discover a treasure beyond measure: unshakable devotion, fiery passion, and the kind of wealth (both spiritual and material) that can build empires. This pairing has the energy to create billionaire-level success when united. The harder the beginning, the greater the reward — their love story is one of transformation, where struggle forges an unbreakable golden bond.
 
 When discussing zodiac compatibility, ALWAYS list ALL compatible signs from both the trine group, harmonious pair, AND any special compatibility for the given sign. For example, Snake is compatible with Ox, Rooster (trine), Monkey (harmonious pair), and Goat (special compatibility).
 
