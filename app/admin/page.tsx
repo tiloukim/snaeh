@@ -1,6 +1,8 @@
 import { getSupabaseAdmin } from "@/lib/supabase/admin";
 import AdminDashboard from "./AdminDashboard";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminPage() {
   const supabaseAdmin = getSupabaseAdmin();
   const { data: waitlist, error } = await supabaseAdmin
