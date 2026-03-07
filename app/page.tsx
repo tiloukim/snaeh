@@ -300,7 +300,6 @@ export default function Home() {
         <ul className="nav-links">
           <li><a href="#how">{t.navHow[lang]}</a></li>
           <li><a href="#features">{t.navFeatures[lang]}</a></li>
-          <li><a href="#pricing">{t.navPricing[lang]}</a></li>
           <li><a href="#stories">{t.navStories[lang]}</a></li>
           <li>
             <button
@@ -340,7 +339,6 @@ export default function Home() {
       <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
         <a href="#how" onClick={() => setMenuOpen(false)}>{t.navHow[lang]}</a>
         <a href="#features" onClick={() => setMenuOpen(false)}>{t.navFeatures[lang]}</a>
-        <a href="#pricing" onClick={() => setMenuOpen(false)}>{t.navPricing[lang]}</a>
         <a href="#stories" onClick={() => setMenuOpen(false)}>{t.navStories[lang]}</a>
         <a href="/auth/login" onClick={() => setMenuOpen(false)}>Sign In</a>
         <a href="/auth/signup" className="nav-cta" onClick={() => setMenuOpen(false)}>Sign Up</a>
@@ -523,43 +521,6 @@ export default function Home() {
             <div className="feature-title">{t.feat6Title[lang]}</div>
             <span className="feature-title-khmer">សុវត្ថិភាព</span>
             <p className="feature-desc">{t.feat6Desc[lang]}</p>
-          </div>
-        </div>
-      </section>
-
-      <div className="ornament-divider">
-        <span className="ornament-center">&#9670; &#9670; &#9670;</span>
-      </div>
-
-      {/* PRICING */}
-      <section className="pricing-section" id="pricing">
-        <div className="section-header reveal">
-          <span className="section-eyebrow">{lang === "en" ? "Early Access" : "ចូលប្រើមុនគេ"}</span>
-          <h2 className="section-title">
-            {lang === "en" ? "100% " : "១០០% "}<em>{lang === "en" ? "Free" : "ឥតគិតថ្លៃ"}</em>{lang === "en" ? " Right Now" : " ឥឡូវនេះ"}
-          </h2>
-          <p className="section-desc">
-            {lang === "en"
-              ? "All features are completely free for the first 500 users. Sign up now and get unlimited access — no credit card needed."
-              : "មុខងារទាំងអស់ឥតគិតថ្លៃសម្រាប់អ្នកប្រើប្រាស់ ៥០០ នាក់ដំបូង។ ចុះឈ្មោះឥឡូវនេះ និងទទួលបានការចូលប្រើគ្មានដែនកំណត់ — មិនត្រូវការកាតឥណទាន។"}
-          </p>
-        </div>
-        <div className="pricing-grid" style={{ gridTemplateColumns: "1fr" }}>
-          <div className="pricing-card featured reveal" style={{ maxWidth: 480, margin: "0 auto", width: "100%" }}>
-            <div className="pricing-badge">{lang === "en" ? "First 500 Users" : "អ្នកប្រើប្រាស់ ៥០០ នាក់ដំបូង"}</div>
-            <span className="pricing-tier">{lang === "en" ? "All Access" : "ចូលប្រើទាំងអស់"}</span>
-            <div className="pricing-price"><sup>$</sup>0</div>
-            <span className="pricing-period">{lang === "en" ? "Free forever for early members" : "ឥតគិតថ្លៃជារៀងរហូតសម្រាប់សមាជិកដំបូង"}</span>
-            <ul className="pricing-features">
-              <li>{lang === "en" ? "Unlimited likes" : "ចូលចិត្តគ្មានដែនកំណត់"}</li>
-              <li>{lang === "en" ? "See who liked you" : "មើលអ្នកដែលចូលចិត្តអ្នក"}</li>
-              <li>{lang === "en" ? "Chat with matches" : "ជជែកជាមួយគូស្នេហ៍"}</li>
-              <li>{lang === "en" ? "Zodiac compatibility matching" : "ផ្គូផ្គងភាពឆបគ្នានៃរាសីចក្រ"}</li>
-              <li>{lang === "en" ? "Province & country filter" : "ត្រងតាមខេត្ត និងប្រទេស"}</li>
-              <li>{lang === "en" ? "Verified profiles" : "ប្រវត្តិរូបផ្ទៀងផ្ទាត់"}</li>
-              <li>{lang === "en" ? "Khmer & English UI" : "ខ្មែរ និងអង់គ្លេស"}</li>
-            </ul>
-            <a href="/auth/signup" className="btn-filled">{lang === "en" ? "Sign Up Free" : "ចុះឈ្មោះឥតគិតថ្លៃ"}</a>
           </div>
         </div>
       </section>
