@@ -74,8 +74,11 @@ export default function AboutPage() {
       </div>
 
       <footer className="static-footer">
-        <div className="footer-copy">&copy; 2026 SnaehApp. All rights reserved.</div>
-        <div className="footer-powered">Powered by <a href="https://angkorai.ai" target="_blank" rel="noopener noreferrer">AngkorAI</a></div>
+        <div className="footer-bottom" style={{justifyContent:"center"}}>
+          <span className="footer-copy">&copy; 2026 SnaehApp. All rights reserved.</span>
+          <span className="footer-dot">&middot;</span>
+          <span className="footer-powered">Powered by <a href="https://angkorai.ai" target="_blank" rel="noopener noreferrer">AngkorAI</a></span>
+        </div>
       </footer>
     </div>
   );
