@@ -534,56 +534,32 @@ export default function Home() {
       {/* PRICING */}
       <section className="pricing-section" id="pricing">
         <div className="section-header reveal">
-          <span className="section-eyebrow">{t.priceEyebrow[lang]}</span>
+          <span className="section-eyebrow">{lang === "en" ? "Early Access" : "ចូលប្រើមុនគេ"}</span>
           <h2 className="section-title">
-            {t.priceTitle1[lang]}<em>{t.priceTitle2[lang]}</em>
+            {lang === "en" ? "100% " : "១០០% "}<em>{lang === "en" ? "Free" : "ឥតគិតថ្លៃ"}</em>{lang === "en" ? " Right Now" : " ឥឡូវនេះ"}
           </h2>
-          <p className="section-desc">{t.priceDesc[lang]}</p>
+          <p className="section-desc">
+            {lang === "en"
+              ? "All features are completely free for the first 500 users. Sign up now and get unlimited access — no credit card needed."
+              : "មុខងារទាំងអស់ឥតគិតថ្លៃសម្រាប់អ្នកប្រើប្រាស់ ៥០០ នាក់ដំបូង។ ចុះឈ្មោះឥឡូវនេះ និងទទួលបានការចូលប្រើគ្មានដែនកំណត់ — មិនត្រូវការកាតឥណទាន។"}
+          </p>
         </div>
-        <div className="pricing-grid">
-          <div className="pricing-card reveal">
-            <span className="pricing-tier">{t.priceFree[lang]}</span>
+        <div className="pricing-grid" style={{ gridTemplateColumns: "1fr" }}>
+          <div className="pricing-card featured reveal" style={{ maxWidth: 480, margin: "0 auto", width: "100%" }}>
+            <div className="pricing-badge">{lang === "en" ? "First 500 Users" : "អ្នកប្រើប្រាស់ ៥០០ នាក់ដំបូង"}</div>
+            <span className="pricing-tier">{lang === "en" ? "All Access" : "ចូលប្រើទាំងអស់"}</span>
             <div className="pricing-price"><sup>$</sup>0</div>
-            <span className="pricing-period">{t.priceForever[lang]}</span>
+            <span className="pricing-period">{lang === "en" ? "Free forever for early members" : "ឥតគិតថ្លៃជារៀងរហូតសម្រាប់សមាជិកដំបូង"}</span>
             <ul className="pricing-features">
-              <li>{t.priceFree1[lang]}</li>
-              <li>{t.priceFree2[lang]}</li>
-              <li>{t.priceFree3[lang]}</li>
-              <li>{t.priceFree4[lang]}</li>
-              <li>{t.priceFree5[lang]}</li>
+              <li>{lang === "en" ? "Unlimited likes" : "ចូលចិត្តគ្មានដែនកំណត់"}</li>
+              <li>{lang === "en" ? "See who liked you" : "មើលអ្នកដែលចូលចិត្តអ្នក"}</li>
+              <li>{lang === "en" ? "Chat with matches" : "ជជែកជាមួយគូស្នេហ៍"}</li>
+              <li>{lang === "en" ? "Zodiac compatibility matching" : "ផ្គូផ្គងភាពឆបគ្នានៃរាសីចក្រ"}</li>
+              <li>{lang === "en" ? "Province & country filter" : "ត្រងតាមខេត្ត និងប្រទេស"}</li>
+              <li>{lang === "en" ? "Verified profiles" : "ប្រវត្តិរូបផ្ទៀងផ្ទាត់"}</li>
+              <li>{lang === "en" ? "Khmer & English UI" : "ខ្មែរ និងអង់គ្លេស"}</li>
             </ul>
-            <a href="#" className="btn-outline">{t.priceGetStarted[lang]}</a>
-          </div>
-
-          <div className="pricing-card featured reveal" style={{ transitionDelay: "0.1s" }}>
-            <div className="pricing-badge">{t.priceMostPopular[lang]}</div>
-            <span className="pricing-tier">Premium</span>
-            <div className="pricing-price"><sup>$</sup>5</div>
-            <span className="pricing-period">{t.pricePerMonth[lang]}</span>
-            <ul className="pricing-features">
-              <li>{t.pricePrem1[lang]}</li>
-              <li>{t.pricePrem2[lang]}</li>
-              <li>{t.pricePrem3[lang]}</li>
-              <li>{t.pricePrem4[lang]}</li>
-              <li>{t.pricePrem5[lang]}</li>
-              <li>{t.pricePrem6[lang]}</li>
-            </ul>
-            <a href="#" className="btn-filled">{t.priceStartPremium[lang]}</a>
-          </div>
-
-          <div className="pricing-card reveal" style={{ transitionDelay: "0.2s" }}>
-            <span className="pricing-tier">Gold</span>
-            <div className="pricing-price"><sup>$</sup>10</div>
-            <span className="pricing-period">{t.pricePerMonth[lang]}</span>
-            <ul className="pricing-features">
-              <li>{t.priceGold1[lang]}</li>
-              <li>{t.priceGold2[lang]}</li>
-              <li>{t.priceGold3[lang]}</li>
-              <li>{t.priceGold4[lang]}</li>
-              <li>{t.priceGold5[lang]}</li>
-              <li>{t.priceGold6[lang]}</li>
-            </ul>
-            <a href="#" className="btn-outline">{t.priceGoGold[lang]}</a>
+            <a href="/auth/signup" className="btn-filled">{lang === "en" ? "Sign Up Free" : "ចុះឈ្មោះឥតគិតថ្លៃ"}</a>
           </div>
         </div>
       </section>
