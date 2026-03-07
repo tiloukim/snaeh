@@ -42,6 +42,8 @@ interface Profile {
   bio: string | null;
   country: string | null;
   province: string | null;
+  city: string | null;
+  zipcode: string | null;
   photo_url: string | null;
   looking_for: string | null;
   interests: string[];
@@ -61,6 +63,8 @@ export default function ProfileForm({
   const [bio, setBio] = useState(profile?.bio ?? "");
   const [country, setCountry] = useState(profile?.country ?? "");
   const [province, setProvince] = useState(profile?.province ?? "");
+  const [city, setCity] = useState(profile?.city ?? "");
+  const [zipcode, setZipcode] = useState(profile?.zipcode ?? "");
   const [photoUrl, setPhotoUrl] = useState(profile?.photo_url ?? "");
   const [lookingFor, setLookingFor] = useState(profile?.looking_for ?? "");
   const [dob, setDob] = useState(profile?.date_of_birth ?? "");
@@ -169,6 +173,8 @@ export default function ProfileForm({
       bio: bio || null,
       country: country || null,
       province: province || null,
+      city: city || null,
+      zipcode: zipcode || null,
       photo_url: finalPhotoUrl,
       looking_for: lookingFor || null,
       zodiac: computedZodiac,
@@ -294,6 +300,8 @@ export default function ProfileForm({
           onChange={(e) => {
             setCountry(e.target.value);
             setProvince("");
+            setCity("");
+            setZipcode("");
           }}
         >
           <option value="">Select country</option>
@@ -305,7 +313,7 @@ export default function ProfileForm({
 
       <div className="profile-form-row">
         <div className="profile-form-group">
-          <label>{country === "Cambodia" ? "Province" : "City"}</label>
+          <label>{country === "Cambodia" ? "Province" : country === "USA" ? "State" : country === "Canada" ? "Province" : "City"}</label>
           <select
             className="profile-input"
             value={province}
@@ -313,13 +321,56 @@ export default function ProfileForm({
             disabled={!country}
           >
             <option value="">
-              {country ? `Select ${country === "Cambodia" ? "province" : "city"}` : "Select country first"}
+              {country ? `Select ${country === "Cambodia" || country === "Canada" ? "province" : country === "USA" ? "state" : "city"}` : "Select country first"}
             </option>
             {(countryCities[country] ?? []).map((p) => (
               <option key={p} value={p}>{p}</option>
             ))}
           </select>
         </div>
+        {(country === "USA" || country === "Canada") && (
+          <div className="profile-form-group">
+            <label>City</label>
+            <input
+              type="text"
+              className="profile-input"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              placeholder="Your city"
+            />
+          </div>
+        )}
+      </div>
+
+      {(country === "USA" || country === "Canada") && (
+        <div className="profile-form-row">
+          <div className="profile-form-group">
+            <label>Zip Code</label>
+            <input
+              type="text"
+              className="profile-input"
+              value={zipcode}
+              onChange={(e) => setZipcode(e.target.value)}
+              placeholder={country === "USA" ? "e.g. 90210" : "e.g. V6B 1A1"}
+            />
+          </div>
+          <div className="profile-form-group">
+            <label>Looking For</label>
+            <select
+              className="profile-input"
+              value={lookingFor}
+              onChange={(e) => setLookingFor(e.target.value)}
+            >
+              <option value="">Select</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="everyone">Everyone</option>
+            </select>
+          </div>
+        </div>
+      )}
+
+      {country !== "USA" && country !== "Canada" && (
         <div className="profile-form-group">
           <label>Looking For</label>
           <select
@@ -333,7 +384,7 @@ export default function ProfileForm({
             <option value="everyone">Everyone</option>
           </select>
         </div>
-      </div>
+      )}
 
       <div className="profile-form-row">
         <div className="profile-form-group">
