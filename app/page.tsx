@@ -248,11 +248,13 @@ function WaitlistForm({ id }: { id: string }) {
 
 export default function Home() {
   const [lang, setLang] = useState<Lang>("en");
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const nav = document.getElementById("navbar");
     const handleScroll = () => {
       nav?.classList.toggle("scrolled", window.scrollY > 40);
+      if (menuOpen) setMenuOpen(false);
     };
     window.addEventListener("scroll", handleScroll);
 
@@ -270,7 +272,7 @@ export default function Home() {
       window.removeEventListener("scroll", handleScroll);
       observer.disconnect();
     };
-  }, []);
+  }, [menuOpen]);
 
   return (
     <LangContext.Provider value={lang}>
@@ -308,6 +310,9 @@ export default function Home() {
             </button>
           </li>
           <li>
+            <a href="/auth/login" className="nav-signin">Sign In</a>
+          </li>
+          <li>
             <a href="#home" className="nav-cta">{t.navCta[lang]}</a>
           </li>
         </ul>
@@ -319,9 +324,25 @@ export default function Home() {
           >
             {lang === "en" ? "KH" : "EN"}
           </button>
-          <button className="nav-menu-btn" aria-label="Menu">&#9776;</button>
+          <button
+            className="nav-menu-btn"
+            aria-label="Menu"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            {menuOpen ? "\u2715" : "\u2630"}
+          </button>
         </div>
       </nav>
+
+      {/* MOBILE MENU */}
+      <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
+        <a href="#how" onClick={() => setMenuOpen(false)}>{t.navHow[lang]}</a>
+        <a href="#features" onClick={() => setMenuOpen(false)}>{t.navFeatures[lang]}</a>
+        <a href="#pricing" onClick={() => setMenuOpen(false)}>{t.navPricing[lang]}</a>
+        <a href="#stories" onClick={() => setMenuOpen(false)}>{t.navStories[lang]}</a>
+        <a href="/auth/login" onClick={() => setMenuOpen(false)}>Sign In</a>
+        <a href="#home" className="nav-cta" onClick={() => setMenuOpen(false)}>{t.navCta[lang]}</a>
+      </div>
 
       {/* HERO */}
       <section className="hero" id="home">
