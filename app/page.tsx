@@ -481,20 +481,6 @@ export default function Home() {
             <a href="/auth/signup" className="btn-primary">Sign Up Free &rarr;</a>
             <a href="#how" className="btn-secondary">{t.heroSeeHow[lang]}</a>
           </div>
-          <div className="hero-stats">
-            <div>
-              <span className="stat-num">50K+</span>
-              <span className="stat-label">{t.statUsers[lang]}</span>
-            </div>
-            <div>
-              <span className="stat-num">8K+</span>
-              <span className="stat-label">{t.statMatches[lang]}</span>
-            </div>
-            <div>
-              <span className="stat-num">4.8&#9733;</span>
-              <span className="stat-label">{t.statRating[lang]}</span>
-            </div>
-          </div>
         </div>
 
         <div className="hero-visual">
