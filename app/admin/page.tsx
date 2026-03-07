@@ -1,7 +1,8 @@
-import { supabaseAdmin } from "@/lib/supabase/admin";
+import { getSupabaseAdmin } from "@/lib/supabase/admin";
 import AdminDashboard from "./AdminDashboard";
 
 export default async function AdminPage() {
+  const supabaseAdmin = getSupabaseAdmin();
   const { data: waitlist, error } = await supabaseAdmin
     .from("waitlist")
     .select("*")
