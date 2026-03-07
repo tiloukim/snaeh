@@ -44,6 +44,7 @@ export default function AppShell({
         </a>
         <nav className="app-nav">
           <a href="/app/discover">Discover</a>
+          <a href="/app/matches">Matches</a>
           <a href="/app/profile">Profile</a>
         </nav>
         <div className="app-user">

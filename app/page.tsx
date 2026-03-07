@@ -315,7 +315,7 @@ export default function Home() {
             <a href="/auth/login" className="nav-signin">Sign In</a>
           </li>
           <li>
-            <a href="#home" className="nav-cta">{t.navCta[lang]}</a>
+            <a href="/auth/signup" className="nav-cta">Sign Up</a>
           </li>
         </ul>
         <div className="nav-right-mobile">
@@ -343,7 +343,7 @@ export default function Home() {
         <a href="#pricing" onClick={() => setMenuOpen(false)}>{t.navPricing[lang]}</a>
         <a href="#stories" onClick={() => setMenuOpen(false)}>{t.navStories[lang]}</a>
         <a href="/auth/login" onClick={() => setMenuOpen(false)}>Sign In</a>
-        <a href="#home" className="nav-cta" onClick={() => setMenuOpen(false)}>{t.navCta[lang]}</a>
+        <a href="/auth/signup" className="nav-cta" onClick={() => setMenuOpen(false)}>Sign Up</a>
       </div>
 
       {/* HERO */}
@@ -365,8 +365,8 @@ export default function Home() {
           </h1>
           <span className="hero-title-khmer">{t.heroKhmer[lang]}</span>
           <p className="hero-desc">{t.heroDesc[lang]}</p>
-          <WaitlistForm id="hero-waitlist" />
-          <div className="hero-actions" style={{ marginTop: 16 }}>
+          <div className="hero-actions">
+            <a href="/auth/signup" className="btn-primary">Sign Up Free &rarr;</a>
             <a href="#how" className="btn-secondary">{t.heroSeeHow[lang]}</a>
           </div>
           <div className="hero-stats">
@@ -656,7 +656,10 @@ export default function Home() {
             {t.ctaTitle2[lang]}<em>{t.ctaTitle3[lang]}</em>
           </h2>
           <p className="cta-sub">{t.ctaSub[lang]}</p>
-          <WaitlistForm id="cta-waitlist" />
+          <div className="cta-buttons">
+            <a href="/auth/signup" className="btn-primary">Sign Up Free &rarr;</a>
+            <a href="/auth/login" className="btn-secondary">Sign In</a>
+          </div>
         </div>
       </section>
 
@@ -667,11 +670,9 @@ export default function Home() {
           <span className="footer-khmer">ស្នេហ៍ &middot; Find Love in Cambodia</span>
         </div>
         <ul className="footer-links">
-          <li><a href="#">{t.footerAbout[lang]}</a></li>
-          <li><a href="#">{t.footerSafety[lang]}</a></li>
-          <li><a href="#">{t.footerPrivacy[lang]}</a></li>
-          <li><a href="#">{t.footerTerms[lang]}</a></li>
-          <li><a href="#">{t.footerContact[lang]}</a></li>
+          <li><a href="/about">{t.footerAbout[lang]}</a></li>
+          <li><a href="/privacy">{t.footerPrivacy[lang]}</a></li>
+          <li><a href="/contact">{t.footerContact[lang]}</a></li>
         </ul>
         <div className="footer-copy">&copy; 2026 SnaehApp. All rights reserved.</div>
       </footer>

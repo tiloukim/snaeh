@@ -968,6 +968,7 @@ footer {
   align-items: center;
   justify-content: space-between;
   padding: 16px 32px;
+  gap: 24px;
   border-bottom: 1px solid rgba(212,168,75,0.15);
   background: rgba(15,6,8,0.97);
   position: sticky;
@@ -979,6 +980,7 @@ footer {
   align-items: center;
   gap: 10px;
   text-decoration: none;
+  flex-shrink: 0;
 }
 .app-logo-icon { width: 28px; height: 28px; }
 .app-logo-text {
@@ -986,12 +988,14 @@ footer {
   font-weight: 600;
   font-size: 20px;
   color: var(--cream);
+  white-space: nowrap;
 }
 .app-logo-text span { color: var(--crimson); }
 .app-user {
   display: flex;
   align-items: center;
   gap: 16px;
+  flex-shrink: 0;
 }
 .app-user-email {
   font-size: 13px;
@@ -1130,9 +1134,15 @@ select.profile-input option {
 
 /* ── APP NAV ── */
 .app-nav {
+  position: static;
   display: flex;
   align-items: center;
   gap: 32px;
+  flex-shrink: 0;
+  padding: 0;
+  background: none;
+  border: none;
+  z-index: auto;
 }
 .app-nav a {
   font-size: 11px;
@@ -1287,6 +1297,354 @@ select.profile-input option {
   font-weight: 300;
   color: var(--text-muted);
 }
+
+/* ── STATIC PAGES ── */
+.static-page {
+  min-height: 100vh;
+  background: var(--deep);
+  color: var(--cream);
+}
+.static-nav {
+  position: static;
+  display: flex;
+  align-items: center;
+  padding: 24px 60px;
+  background: var(--deep);
+  border-bottom: 1px solid rgba(212,168,75,0.1);
+  z-index: auto;
+}
+.static-content {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 60px 24px 80px;
+}
+.static-title {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-size: 42px;
+  font-weight: 300;
+  color: var(--cream);
+  margin-bottom: 8px;
+}
+.static-subtitle {
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--text-muted);
+  margin-bottom: 40px;
+}
+.static-section {
+  margin-bottom: 32px;
+}
+.static-section h2 {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--cream);
+  margin-bottom: 12px;
+}
+.static-section p {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--text-muted);
+}
+.static-section a {
+  color: var(--gold);
+  text-decoration: none;
+}
+.static-section a:hover { text-decoration: underline; }
+.static-section ul {
+  list-style: none;
+  margin-top: 8px;
+}
+.static-section ul li {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--text-muted);
+  padding: 4px 0;
+  padding-left: 16px;
+  position: relative;
+}
+.static-section ul li::before {
+  content: '\25C6';
+  font-size: 6px;
+  color: var(--gold);
+  position: absolute;
+  left: 0;
+  top: 10px;
+}
+.static-section ul li strong {
+  color: var(--cream);
+  font-weight: 500;
+}
+.static-footer {
+  padding: 32px 60px;
+  border-top: 1px solid rgba(212,168,75,0.1);
+  text-align: center;
+}
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.contact-form label {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.contact-textarea {
+  resize: vertical;
+  min-height: 120px;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+}
+
+/* ── MATCH OVERLAY ── */
+.match-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(15,6,8,0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: matchFadeIn 0.3s ease;
+}
+@keyframes matchFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.match-overlay-content {
+  text-align: center;
+  animation: matchPop 0.4s ease;
+}
+@keyframes matchPop {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.match-overlay-heart {
+  font-size: 80px;
+  color: var(--crimson);
+  margin-bottom: 16px;
+  animation: matchPulse 0.8s ease infinite;
+}
+@keyframes matchPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+.match-overlay-content h2 {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-size: 42px;
+  font-weight: 300;
+  color: var(--cream);
+  margin-bottom: 8px;
+}
+.match-overlay-content p {
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--text-muted);
+}
+
+/* ── MATCHES PAGE ── */
+.matches-page {
+  max-width: 600px;
+  margin: 0 auto;
+}
+.match-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.match-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background: var(--deep2);
+  border: 1px solid rgba(212,168,75,0.1);
+  border-radius: 8px;
+  text-decoration: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+.match-item:hover {
+  border-color: rgba(212,168,75,0.3);
+  background: var(--deep3);
+}
+.match-item-photo {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.match-item-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.match-item-placeholder {
+  font-size: 28px;
+  opacity: 0.4;
+}
+.match-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.match-item-name {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--cream);
+}
+.match-item-preview {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.matches-empty {
+  text-align: center;
+  padding: 80px 24px;
+}
+.matches-empty-icon {
+  font-size: 64px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+.matches-empty h2 {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 300;
+  color: var(--cream);
+  margin-bottom: 8px;
+}
+.matches-empty p {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--text-muted);
+}
+
+/* ── CHAT ROOM ── */
+.chat-room {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 120px);
+  max-width: 600px;
+  margin: 0 auto;
+}
+.chat-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(212,168,75,0.15);
+  margin-bottom: 12px;
+}
+.chat-back {
+  font-size: 20px;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.chat-back:hover { color: var(--gold); }
+.chat-header-photo {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: rgba(255,255,255,0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.chat-header-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.chat-header-name {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--cream);
+}
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 0;
+}
+.chat-bubble {
+  max-width: 75%;
+  padding: 10px 16px;
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.5;
+}
+.chat-bubble p { margin: 0; }
+.chat-bubble-mine {
+  align-self: flex-end;
+  background: var(--crimson);
+  color: var(--cream);
+  border-bottom-right-radius: 4px;
+}
+.chat-bubble-theirs {
+  align-self: flex-start;
+  background: var(--deep2);
+  border: 1px solid rgba(212,168,75,0.15);
+  color: var(--cream);
+  border-bottom-left-radius: 4px;
+}
+.chat-sender-name {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: block;
+  margin-bottom: 4px;
+}
+.chat-input-row {
+  display: flex;
+  gap: 8px;
+  padding: 12px 0;
+  border-top: 1px solid rgba(212,168,75,0.15);
+}
+.chat-input {
+  flex: 1;
+  padding: 12px 16px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(212,168,75,0.2);
+  border-radius: 8px;
+  color: var(--cream);
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.chat-input::placeholder { color: var(--text-muted); }
+.chat-input:focus { border-color: var(--gold); }
+.chat-send {
+  padding: 12px 24px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.chat-send:disabled { opacity: 0.5; cursor: not-allowed; }
 
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {

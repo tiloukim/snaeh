@@ -3,12 +3,33 @@
 import { useState, useRef, FormEvent, ChangeEvent } from "react";
 import { createBrowserClient } from "@supabase/ssr";
 import { useRouter } from "next/navigation";
-import { provinces } from "@/lib/provinces";
+import { countries, countryCities } from "@/lib/provinces";
 
-const zodiacSigns = [
-  "Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo",
-  "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces",
+const animalSigns = [
+  "Monkey", "Rooster", "Dog", "Pig", "Rat", "Ox",
+  "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat",
 ];
+
+function getAnimalSign(dateStr: string): string | null {
+  if (!dateStr) return null;
+  const year = new Date(dateStr).getFullYear();
+  return animalSigns[year % 12];
+}
+
+const compatibility: Record<string, string[]> = {
+  Rat: ["Ox", "Dragon", "Monkey"],
+  Ox: ["Rat", "Snake", "Rooster"],
+  Tiger: ["Horse", "Dog", "Pig"],
+  Rabbit: ["Goat", "Dog", "Pig"],
+  Dragon: ["Rat", "Monkey", "Rooster"],
+  Snake: ["Ox", "Rooster", "Goat"],
+  Horse: ["Tiger", "Goat", "Dog"],
+  Goat: ["Rabbit", "Horse", "Pig", "Snake"],
+  Monkey: ["Rat", "Dragon", "Snake"],
+  Rooster: ["Ox", "Dragon", "Snake"],
+  Dog: ["Tiger", "Rabbit", "Horse"],
+  Pig: ["Tiger", "Rabbit", "Goat"],
+};
 
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 const MAX_SIZE = 5 * 1024 * 1024; // 5MB
@@ -19,11 +40,13 @@ interface Profile {
   age: number | null;
   gender: string | null;
   bio: string | null;
+  country: string | null;
   province: string | null;
   photo_url: string | null;
   looking_for: string | null;
   interests: string[];
   zodiac: string | null;
+  date_of_birth: string | null;
 }
 
 export default function ProfileForm({
@@ -34,19 +57,32 @@ export default function ProfileForm({
   userId: string;
 }) {
   const [name, setName] = useState(profile?.name ?? "");
-  const [age, setAge] = useState(profile?.age?.toString() ?? "");
   const [gender, setGender] = useState(profile?.gender ?? "");
   const [bio, setBio] = useState(profile?.bio ?? "");
+  const [country, setCountry] = useState(profile?.country ?? "");
   const [province, setProvince] = useState(profile?.province ?? "");
   const [photoUrl, setPhotoUrl] = useState(profile?.photo_url ?? "");
   const [lookingFor, setLookingFor] = useState(profile?.looking_for ?? "");
-  const [zodiac, setZodiac] = useState(profile?.zodiac ?? "");
+  const [dob, setDob] = useState(profile?.date_of_birth ?? "");
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(profile?.photo_url ?? null);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const calcAge = (dateStr: string): number | null => {
+    if (!dateStr) return null;
+    const birth = new Date(dateStr);
+    const today = new Date();
+    let age = today.getFullYear() - birth.getFullYear();
+    const m = today.getMonth() - birth.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
+    return age;
+  };
+
+  const computedAge = calcAge(dob);
+  const computedZodiac = getAnimalSign(dob);
 
   const router = useRouter();
   const supabase = createBrowserClient(
@@ -128,13 +164,15 @@ export default function ProfileForm({
     const updates = {
       id: userId,
       name: name || null,
-      age: age ? parseInt(age) : null,
+      age: computedAge,
       gender: gender || null,
       bio: bio || null,
+      country: country || null,
       province: province || null,
       photo_url: finalPhotoUrl,
       looking_for: lookingFor || null,
-      zodiac: zodiac || null,
+      zodiac: computedZodiac,
+      date_of_birth: dob || null,
       updated_at: new Date().toISOString(),
     };
 
@@ -200,17 +238,26 @@ export default function ProfileForm({
         />
       </div>
 
+      <div className="profile-form-group">
+        <label>Date of Birth</label>
+        <input
+          type="date"
+          className="profile-input"
+          value={dob}
+          onChange={(e) => setDob(e.target.value)}
+        />
+      </div>
+
       <div className="profile-form-row">
         <div className="profile-form-group">
           <label>Age</label>
           <input
-            type="number"
+            type="text"
             className="profile-input"
-            value={age}
-            onChange={(e) => setAge(e.target.value)}
-            min="18"
-            max="99"
-            placeholder="18"
+            value={computedAge !== null ? `${computedAge} years old` : "Set date of birth"}
+            readOnly
+            tabIndex={-1}
+            style={{ opacity: computedAge !== null ? 1 : 0.5 }}
           />
         </div>
         <div className="profile-form-group">
@@ -239,19 +286,37 @@ export default function ProfileForm({
         />
       </div>
 
+      <div className="profile-form-group">
+        <label>Country</label>
+        <select
+          className="profile-input"
+          value={country}
+          onChange={(e) => {
+            setCountry(e.target.value);
+            setProvince("");
+          }}
+        >
+          <option value="">Select country</option>
+          {countries.map((c) => (
+            <option key={c} value={c}>{c}</option>
+          ))}
+        </select>
+      </div>
+
       <div className="profile-form-row">
         <div className="profile-form-group">
-          <label>Province</label>
+          <label>{country === "Cambodia" ? "Province" : "City"}</label>
           <select
             className="profile-input"
             value={province}
             onChange={(e) => setProvince(e.target.value)}
+            disabled={!country}
           >
-            <option value="">Select province</option>
-            {provinces.map((p) => (
-              <option key={p} value={p}>
-                {p}
-              </option>
+            <option value="">
+              {country ? `Select ${country === "Cambodia" ? "province" : "city"}` : "Select country first"}
+            </option>
+            {(countryCities[country] ?? []).map((p) => (
+              <option key={p} value={p}>{p}</option>
             ))}
           </select>
         </div>
@@ -270,20 +335,29 @@ export default function ProfileForm({
         </div>
       </div>
 
-      <div className="profile-form-group">
-        <label>Zodiac Sign</label>
-        <select
-          className="profile-input"
-          value={zodiac}
-          onChange={(e) => setZodiac(e.target.value)}
-        >
-          <option value="">Select</option>
-          {zodiacSigns.map((z) => (
-            <option key={z} value={z}>
-              {z}
-            </option>
-          ))}
-        </select>
+      <div className="profile-form-row">
+        <div className="profile-form-group">
+          <label>Your Birth Animal Sign</label>
+          <input
+            type="text"
+            className="profile-input"
+            value={computedZodiac ?? "Set date of birth"}
+            readOnly
+            tabIndex={-1}
+            style={{ opacity: computedZodiac ? 1 : 0.5 }}
+          />
+        </div>
+        <div className="profile-form-group">
+          <label>Compatible Signs</label>
+          <input
+            type="text"
+            className="profile-input"
+            value={computedZodiac ? (compatibility[computedZodiac] ?? []).join(", ") : "Set date of birth"}
+            readOnly
+            tabIndex={-1}
+            style={{ opacity: computedZodiac ? 1 : 0.5 }}
+          />
+        </div>
       </div>
 
       {message && (

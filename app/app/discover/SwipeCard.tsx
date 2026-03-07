@@ -24,6 +24,8 @@ export default function SwipeCard({
   const [index, setIndex] = useState(0);
   const [exitDir, setExitDir] = useState<"left" | "right" | null>(null);
   const [swiping, setSwiping] = useState(false);
+  const [showMatch, setShowMatch] = useState(false);
+  const [matchedName, setMatchedName] = useState("");
 
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -42,6 +44,29 @@ export default function SwipeCard({
       swiped_id: current.id,
       direction,
     });
+
+    // Check for mutual like
+    if (direction === "like") {
+      const { data: mutual } = await supabase
+        .from("swipes")
+        .select("id")
+        .eq("swiper_id", current.id)
+        .eq("swiped_id", userId)
+        .eq("direction", "like")
+        .maybeSingle();
+
+      if (mutual) {
+        // Create match with sorted IDs for unique constraint
+        const [user1, user2] =
+          userId < current.id ? [userId, current.id] : [current.id, userId];
+        await supabase.from("matches").insert({ user1_id: user1, user2_id: user2 });
+
+        setMatchedName(current.name);
+        setShowMatch(true);
+        // Auto-dismiss after 2s
+        setTimeout(() => setShowMatch(false), 2000);
+      }
+    }
 
     // Wait for exit animation
     setTimeout(() => {
@@ -62,6 +87,16 @@ export default function SwipeCard({
   }
 
   return (
+    <>
+    {showMatch && (
+      <div className="match-overlay">
+        <div className="match-overlay-content">
+          <div className="match-overlay-heart">&#9829;</div>
+          <h2>It&apos;s a Match!</h2>
+          <p>You and {matchedName} liked each other</p>
+        </div>
+      </div>
+    )}
     <div className={`swipe-card ${exitDir ? `swipe-exit-${exitDir}` : ""}`}>
       <div className="swipe-card-photo">
         {current.photo_url ? (
@@ -106,5 +141,6 @@ export default function SwipeCard({
         </button>
       </div>
     </div>
+    </>
   );
 }
