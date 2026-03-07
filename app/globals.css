@@ -1441,13 +1441,26 @@ select.profile-input option {
   border: 1px solid rgba(212,168,75,0.25);
   border-radius: 6px;
   color: var(--cream);
+  color-scheme: dark;
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
   font-size: 16px;
   font-weight: 300;
   outline: none;
   transition: border-color 0.2s;
+  -webkit-appearance: none;
+  appearance: none;
 }
 .zodiac-date-input:focus { border-color: var(--gold); }
+.zodiac-date-input::-webkit-datetime-edit-text,
+.zodiac-date-input::-webkit-datetime-edit-month-field,
+.zodiac-date-input::-webkit-datetime-edit-day-field,
+.zodiac-date-input::-webkit-datetime-edit-year-field {
+  color: var(--cream);
+}
+.zodiac-date-input:invalid::-webkit-datetime-edit,
+.zodiac-date-input[value=""]::-webkit-datetime-edit {
+  color: rgba(255,255,255,0.4);
+}
 .zodiac-calc-results {
   animation: heroFadeIn 0.4s ease;
 }

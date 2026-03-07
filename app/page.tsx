@@ -311,6 +311,7 @@ function ZodiacCalculator({ lang }: { lang: Lang }) {
             className="zodiac-date-input"
             value={dob}
             onChange={(e) => setDob(e.target.value)}
+            placeholder="mm/dd/yyyy"
           />
         </div>
 
