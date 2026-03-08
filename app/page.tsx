@@ -169,6 +169,17 @@ const t = {
   footerTerms: { en: "Terms", kh: "លក្ខខណ្ឌ" },
   footerContact: { en: "Contact", kh: "ទំនាក់ទំនង" },
 
+  // Fortune
+  fortuneEyebrow: { en: "Mystical Guidance", kh: "ការណែណាំ" },
+  fortuneTitle1: { en: "Fortune ", kh: "ហោរា" },
+  fortuneTitle2: { en: "Teller", kh: "សាស្ត្រ" },
+  fortuneDesc: {
+    en: "Select your zodiac animal sign and discover what the stars have in store for you today.",
+    kh: "ជ្រើសរើសសញ្ញាសត្វរាសីចក្ររបស់អ្ណក។",
+  },
+  fortuneBtn: { en: "Read My Fortune", kh: "អាណហោរាសាស្ត្រ" },
+  fortuneLoading: { en: "Reading the stars...", kh: "កំពុងអាណផ្កាយ..." },
+
   // Waitlist
   waitlistPlaceholder: { en: "Enter your email", kh: "បញ្ចូលអ៊ីមែលរបស់អ្នក" },
   waitlistBtn: { en: "Join Waitlist", kh: "ចុះឈ្មោះ" },
@@ -365,6 +376,98 @@ function ZodiacCalculator({ lang }: { lang: Lang }) {
   );
 }
 
+function FortuneTeller({ lang }: { lang: Lang }) {
+  const [selectedSign, setSelectedSign] = useState<string | null>(null);
+  const [fortune, setFortune] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const generateFortune = async (sign: string) => {
+    setSelectedSign(sign);
+    setFortune("");
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/fortune", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sign, lang: lang === "kh" ? "km" : "en" }),
+      });
+
+      if (!res.ok || !res.body) {
+        setFortune("Could not read your fortune. Please try again.");
+        setLoading(false);
+        return;
+      }
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split("\n");
+        buffer = lines.pop() ?? "";
+        for (const line of lines) {
+          if (line.startsWith("data: ")) {
+            const data = line.slice(6);
+            if (data === "[DONE]") break;
+            try {
+              const { content } = JSON.parse(data);
+              if (content) setFortune((prev) => prev + content);
+            } catch { /* skip */ }
+          }
+        }
+      }
+    } catch {
+      setFortune("Could not read your fortune. Please try again.");
+    }
+    setLoading(false);
+  };
+
+  return (
+    <section className="fortune-section">
+      <div className="section-header reveal">
+        <span className="section-eyebrow">{t.fortuneEyebrow[lang]}</span>
+        <h2 className="section-title">
+          {t.fortuneTitle1[lang]}<em>{t.fortuneTitle2[lang]}</em>
+        </h2>
+        <p className="section-desc">{t.fortuneDesc[lang]}</p>
+      </div>
+
+      <div className="fortune-grid reveal">
+        {animalSigns.map((sign) => (
+          <button
+            key={sign}
+            className={`fortune-sign-btn${selectedSign === sign ? " active" : ""}`}
+            onClick={() => generateFortune(sign)}
+            disabled={loading}
+          >
+            <span className="fortune-sign-btn-emoji">{animalEmoji[sign]}</span>
+            <span className="fortune-sign-btn-name">{sign}</span>
+          </button>
+        ))}
+      </div>
+
+      {(loading || fortune) && (
+        <div className="fortune-display reveal visible">
+          {selectedSign && (
+            <div className="fortune-display-header">
+              <span>{animalEmoji[selectedSign]}</span>
+              <span>{selectedSign}</span>
+            </div>
+          )}
+          <div className="fortune-display-text">
+            {loading && !fortune && <span className="fortune-loading-dots">Reading the stars...</span>}
+            {fortune}
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}
+
 export default function Home() {
   const [lang, setLang] = useState<Lang>("en");
   const [menuOpen, setMenuOpen] = useState(false);
@@ -540,6 +643,13 @@ export default function Home() {
 
       {/* ZODIAC CALCULATOR */}
       <ZodiacCalculator lang={lang} />
+
+      <div className="ornament-divider">
+        <span className="ornament-center">&#9670; &#9670; &#9670;</span>
+      </div>
+
+      {/* FORTUNE TELLER */}
+      <FortuneTeller lang={lang} />
 
       <div className="ornament-divider">
         <span className="ornament-center">&#9670; &#9670; &#9670;</span>
