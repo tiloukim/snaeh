@@ -25,7 +25,8 @@ export default async function DiscoverPage() {
     .from("profiles")
     .select("id, name, age, gender, bio, province, photo_url, zodiac")
     .not("id", "in", `(${excludeIds.join(",")})`)
-    .not("name", "is", null);
+    .not("name", "is", null)
+    .eq("status", "approved");
 
   // Shuffle candidates
   const shuffled = (candidates ?? []).sort(() => Math.random() - 0.5);

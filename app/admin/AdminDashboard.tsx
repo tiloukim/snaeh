@@ -19,25 +19,44 @@ interface UserProfile {
   province: string | null;
   zodiac: string | null;
   photo_url: string | null;
+  bio: string | null;
   looking_for: string | null;
   date_of_birth: string | null;
   updated_at: string | null;
+  status: string | null;
 }
 
-type Tab = "waitlist" | "users";
+interface PendingProfile {
+  id: string;
+  name: string | null;
+  age: number | null;
+  gender: string | null;
+  country: string | null;
+  province: string | null;
+  photo_url: string | null;
+  bio: string | null;
+  updated_at: string | null;
+  status: string | null;
+}
+
+type Tab = "waitlist" | "users" | "pending";
 
 export default function AdminDashboard({
   waitlist,
   users,
+  pendingUsers: initialPending,
   error,
 }: {
   waitlist: WaitlistEntry[];
   users: UserProfile[];
+  pendingUsers: PendingProfile[];
   error: string | null;
 }) {
   const [tab, setTab] = useState<Tab>("users");
   const [search, setSearch] = useState("");
   const [genderFilter, setGenderFilter] = useState<string>("all");
+  const [pendingList, setPendingList] = useState(initialPending);
+  const [actionLoading, setActionLoading] = useState<string | null>(null);
   const router = useRouter();
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -50,6 +69,23 @@ export default function AdminDashboard({
     router.refresh();
   };
 
+  const handleStatusChange = async (userId: string, status: string) => {
+    setActionLoading(userId);
+    try {
+      const res = await fetch("/api/admin/approve", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, status }),
+      });
+      if (res.ok) {
+        setPendingList((prev) => prev.filter((u) => u.id !== userId));
+        router.refresh();
+      }
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
   const handleExportCSV = () => {
     if (tab === "waitlist") {
       const header = "Email,Date\n";
@@ -59,10 +95,10 @@ export default function AdminDashboard({
       const blob = new Blob([header + rows], { type: "text/csv" });
       download(blob, "snaeh-waitlist.csv");
     } else {
-      const header = "Name,Age,Gender,Zodiac,Location,Looking For,Last Updated\n";
+      const header = "Name,Age,Gender,Zodiac,Location,Looking For,Status,Last Updated\n";
       const rows = filteredUsers
         .map((u) =>
-          `"${u.name ?? ""}",${u.age ?? ""},${u.gender ?? ""},${u.zodiac ?? ""},"${u.province ?? ""}, ${u.country ?? ""}",${u.looking_for ?? ""},${u.updated_at ? new Date(u.updated_at).toLocaleDateString() : ""}`
+          `"${u.name ?? ""}",${u.age ?? ""},${u.gender ?? ""},${u.zodiac ?? ""},"${u.province ?? ""}, ${u.country ?? ""}",${u.looking_for ?? ""},${u.status ?? ""},${u.updated_at ? new Date(u.updated_at).toLocaleDateString() : ""}`
         )
         .join("\n");
       const blob = new Blob([header + rows], { type: "text/csv" });
@@ -138,6 +174,15 @@ export default function AdminDashboard({
           Users ({users.length})
         </button>
         <button
+          onClick={() => setTab("pending")}
+          className={`admin-tab ${tab === "pending" ? "admin-tab-active" : ""}`}
+        >
+          Pending Review
+          {pendingList.length > 0 && (
+            <span className="admin-tab-badge">{pendingList.length}</span>
+          )}
+        </button>
+        <button
           onClick={() => setTab("waitlist")}
           className={`admin-tab ${tab === "waitlist" ? "admin-tab-active" : ""}`}
         >
@@ -179,10 +224,12 @@ export default function AdminDashboard({
                   <th>Name</th>
                   <th>Age</th>
                   <th>Gender</th>
+                  <th>Status</th>
                   <th>Zodiac</th>
                   <th>Location</th>
                   <th>Looking For</th>
                   <th>Updated</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -207,16 +254,119 @@ export default function AdminDashboard({
                         {user.gender ?? "—"}
                       </span>
                     </td>
+                    <td>
+                      <span className={`admin-status-badge admin-status-${user.status ?? "pending"}`}>
+                        {user.status ?? "pending"}
+                      </span>
+                    </td>
                     <td>{user.zodiac ?? "—"}</td>
                     <td>{[user.province, user.country].filter(Boolean).join(", ") || "—"}</td>
                     <td>{user.looking_for ?? "—"}</td>
                     <td>{user.updated_at ? new Date(user.updated_at).toLocaleDateString() : "—"}</td>
+                    <td>
+                      {user.status === "approved" && (
+                        <button
+                          className="admin-action-btn admin-action-suspend"
+                          onClick={() => handleStatusChange(user.id, "suspended")}
+                          disabled={actionLoading === user.id}
+                        >
+                          Suspend
+                        </button>
+                      )}
+                      {user.status === "suspended" && (
+                        <button
+                          className="admin-action-btn admin-action-approve"
+                          onClick={() => handleStatusChange(user.id, "approved")}
+                          disabled={actionLoading === user.id}
+                        >
+                          Unsuspend
+                        </button>
+                      )}
+                    </td>
                   </tr>
                 ))}
                 {filteredUsers.length === 0 && (
                   <tr>
-                    <td colSpan={9} style={{ textAlign: "center", opacity: 0.5 }}>
+                    <td colSpan={11} style={{ textAlign: "center", opacity: 0.5 }}>
                       No users found
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
+
+      {/* Pending Review Tab */}
+      {tab === "pending" && (
+        <>
+          <div className="admin-table-wrap">
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Photo</th>
+                  <th>Name</th>
+                  <th>Age</th>
+                  <th>Gender</th>
+                  <th>Bio</th>
+                  <th>Location</th>
+                  <th>Updated</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {pendingList.map((user, i) => (
+                  <tr key={user.id}>
+                    <td>{i + 1}</td>
+                    <td>
+                      {user.photo_url ? (
+                        <img
+                          src={user.photo_url}
+                          alt={user.name ?? ""}
+                          className="admin-user-avatar"
+                        />
+                      ) : (
+                        <div className="admin-user-avatar-placeholder">?</div>
+                      )}
+                    </td>
+                    <td className="admin-user-name">{user.name ?? "—"}</td>
+                    <td>{user.age ?? "—"}</td>
+                    <td>
+                      <span className={`admin-badge admin-badge-${user.gender}`}>
+                        {user.gender ?? "—"}
+                      </span>
+                    </td>
+                    <td style={{ maxWidth: 200, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                      {user.bio ?? "—"}
+                    </td>
+                    <td>{[user.province, user.country].filter(Boolean).join(", ") || "—"}</td>
+                    <td>{user.updated_at ? new Date(user.updated_at).toLocaleDateString() : "—"}</td>
+                    <td>
+                      <div style={{ display: "flex", gap: 6 }}>
+                        <button
+                          className="admin-action-btn admin-action-approve"
+                          onClick={() => handleStatusChange(user.id, "approved")}
+                          disabled={actionLoading === user.id}
+                        >
+                          Approve
+                        </button>
+                        <button
+                          className="admin-action-btn admin-action-reject"
+                          onClick={() => handleStatusChange(user.id, "rejected")}
+                          disabled={actionLoading === user.id}
+                        >
+                          Reject
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+                {pendingList.length === 0 && (
+                  <tr>
+                    <td colSpan={9} style={{ textAlign: "center", opacity: 0.5 }}>
+                      No pending profiles
                     </td>
                   </tr>
                 )}

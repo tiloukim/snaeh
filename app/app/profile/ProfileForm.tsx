@@ -49,6 +49,23 @@ interface Profile {
   interests: string[];
   zodiac: string | null;
   date_of_birth: string | null;
+  status: string | null;
+}
+
+function meetsApprovalRequirements(
+  name: string | null,
+  photoUrl: string | null,
+  bio: string | null,
+  age: number | null,
+  country: string | null,
+  province: string | null
+): boolean {
+  if (!name || !name.trim()) return false;
+  if (!photoUrl || photoUrl.includes("ui-avatars.com")) return false;
+  if (!bio || bio.trim().length < 10) return false;
+  if (!age || age < 18 || age > 99) return false;
+  if (!country || !province) return false;
+  return true;
 }
 
 export default function ProfileForm({
@@ -73,6 +90,7 @@ export default function ProfileForm({
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(profile?.photo_url ?? null);
   const [uploading, setUploading] = useState(false);
+  const [profileStatus, setProfileStatus] = useState(profile?.status ?? "pending");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const calcAge = (dateStr: string): number | null => {
@@ -165,6 +183,17 @@ export default function ProfileForm({
       return;
     }
 
+    // Determine auto-approval status
+    const autoApproved = meetsApprovalRequirements(
+      name || null,
+      finalPhotoUrl,
+      bio || null,
+      computedAge,
+      country || null,
+      province || null
+    );
+    const newStatus = autoApproved ? "approved" : "pending";
+
     const updates = {
       id: userId,
       name: name || null,
@@ -180,6 +209,7 @@ export default function ProfileForm({
       zodiac: computedZodiac,
       date_of_birth: dob || null,
       updated_at: new Date().toISOString(),
+      status: newStatus,
     };
 
     const { error } = await supabase
@@ -191,6 +221,7 @@ export default function ProfileForm({
     } else {
       setPhotoUrl(finalPhotoUrl ?? "");
       setPhotoFile(null);
+      setProfileStatus(newStatus);
       setMessage("Profile saved!");
       router.refresh();
     }
@@ -198,8 +229,21 @@ export default function ProfileForm({
     setSaving(false);
   };
 
+  const statusBanners: Record<string, { className: string; text: string }> = {
+    pending: { className: "profile-status-banner pending", text: "Your profile is under review" },
+    approved: { className: "profile-status-banner approved", text: "Your profile is live" },
+    rejected: { className: "profile-status-banner rejected", text: "Your profile was not approved. Please update and resubmit." },
+    suspended: { className: "profile-status-banner suspended", text: "Your account has been suspended" },
+  };
+
+  const banner = statusBanners[profileStatus];
+
   return (
     <form className="profile-form" onSubmit={handleSubmit}>
+      {banner && (
+        <div className={banner.className}>{banner.text}</div>
+      )}
+
       <div className="profile-form-group">
         <label>Photo</label>
         <div
