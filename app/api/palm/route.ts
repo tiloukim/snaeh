@@ -30,8 +30,10 @@ Guidelines:
 - Include Khmer cultural/spiritual references where appropriate
 - Use emojis to make it engaging (🔮 ✨ 💫 ❤️ 🌟 💰)
 - Add a "Lucky Elements" section at the end (lucky color, number, day, gemstone)
-- Respond in BOTH English and Khmer (ភាសាខ្មែរ)
-- End with a note that this is for entertainment and cultural fun
+- You MUST respond in BOTH English AND Khmer
+- For EACH section, write the English version first, then the Khmer translation right below it
+- Use proper Khmer Unicode script (ក ខ គ ឃ ង etc.) — never Thai or Lao
+- End with a note in both languages that this is for entertainment and cultural fun
 - Do NOT use markdown headers (#), use **bold** and emojis for section titles`;
 
 export async function POST(req: Request) {
@@ -46,7 +48,7 @@ export async function POST(req: Request) {
     if (name) userPrompt += ` My name is ${name}.`;
     if (zodiac) userPrompt += ` My zodiac animal sign is ${zodiac}.`;
     if (dateOfBirth) userPrompt += ` I was born on ${dateOfBirth}.`;
-    userPrompt += " Give me a detailed palm reading about my life, love, wealth, and future.";
+    userPrompt += " Give me a detailed palm reading about my life, love, wealth, and future. Respond in BOTH English and Khmer — write each section in English first, then Khmer below it.";
 
     const messages = [
       { role: "system", content: PALM_SYSTEM_PROMPT },
