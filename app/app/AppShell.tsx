@@ -46,6 +46,7 @@ export default function AppShell({
           <a href="/app/discover">Discover</a>
           <a href="/app/matches">Matches</a>
           <a href="/app/fortune">Fortune</a>
+          <a href="/app/palm">Palm ✋</a>
           <a href="/app/profile">Profile</a>
         </nav>
         <div className="app-user">
