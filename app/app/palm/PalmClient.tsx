@@ -133,9 +133,12 @@ export default function PalmClient({
     <div className="fortune-page">
       <div className="fortune-header">
         <span className="fortune-crystal">✋</span>
-        <h1 className="fortune-title">Palm Reading</h1>
+        <h1 className="fortune-title">Palm Reading / បកស្រាយបន្ទាត់ដៃ</h1>
         <p className="fortune-subtitle">
-          បកស្រាយបន្ទាត់ដៃ — Upload a photo of your palm to reveal your destiny
+          Upload a photo of your palm to reveal your destiny
+        </p>
+        <p className="fortune-subtitle" style={{ fontSize: 13, marginTop: 4 }}>
+          ថតរូបបាតដៃរបស់អ្នកដើម្បីដឹងអំពីវាសនារបស់អ្នក
         </p>
       </div>
 
@@ -145,7 +148,7 @@ export default function PalmClient({
           <span className="fortune-sign-emoji">{animalEmoji[zodiac] ?? "✨"}</span>
           <div className="fortune-sign-info">
             <span className="fortune-sign-label">
-              {name ? `${name}'s` : "Your"} Animal Sign
+              {name ? `${name}'s` : "Your"} Animal Sign / សត្វប្រចាំឆ្នាំ
             </span>
             <span className="fortune-sign-name">{zodiac}</span>
           </div>
@@ -163,7 +166,7 @@ export default function PalmClient({
           textAlign: "center",
         }}>
           <p style={{ fontSize: 12, color: "#8B1A28", fontWeight: 600, marginBottom: 8 }}>
-            💕 Compatible Signs
+            💕 Compatible Signs / សត្វដែលស៊ីគ្នា
           </p>
           <div style={{ display: "flex", justifyContent: "center", gap: 16 }}>
             {compatible.map((sign) => (
@@ -196,7 +199,7 @@ export default function PalmClient({
               onClick={() => { setPalmImage(null); setReading(""); setError(""); }}
               style={{ fontSize: 13 }}
             >
-              Remove & Upload New
+              Remove & Upload New / ដកចេញ និងថតរូបថ្មី
             </button>
           </div>
         </div>
@@ -219,10 +222,10 @@ export default function PalmClient({
           >
             <span style={{ fontSize: 40 }}>🤚</span>
             <span style={{ fontSize: 14, fontWeight: 600 }}>
-              Upload Palm Photo
+              Upload Palm Photo / ថតរូបបាតដៃ
             </span>
             <span style={{ fontSize: 12, color: "#999" }}>
-              Take a clear photo of your open palm
+              Take a clear photo of your open palm / ថតរូបបាតដៃរបស់អ្នកឱ្យច្បាស់
             </span>
           </button>
           <input
@@ -243,7 +246,7 @@ export default function PalmClient({
           onClick={readPalm}
           disabled={loading}
         >
-          {loading ? "Reading your palm..." : "Read My Palm"} 🔮
+          {loading ? "Reading your palm... / កំពុងអានបន្ទាត់ដៃ..." : "Read My Palm / អានបន្ទាត់ដៃ"} 🔮
         </button>
       )}
 
@@ -258,6 +261,8 @@ export default function PalmClient({
           marginTop: 12,
         }}>
           {error}
+          <br />
+          មិនអាចអានបន្ទាត់ដៃបានទេ។ សូមព្យាយាមម្ដងទៀត។
         </div>
       )}
 
