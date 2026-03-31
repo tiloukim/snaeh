@@ -1,10 +1,15 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
-// Central membership database (AngkorAI Supabase)
-const membershipClient = createClient(
-  process.env.MEMBERSHIP_SUPABASE_URL || "",
-  process.env.MEMBERSHIP_SERVICE_KEY || ""
-);
+let _client: SupabaseClient | null = null;
+function getMembershipClient() {
+  if (!_client) {
+    _client = createClient(
+      process.env.MEMBERSHIP_SUPABASE_URL || "",
+      process.env.MEMBERSHIP_SERVICE_KEY || ""
+    );
+  }
+  return _client;
+}
 
 export interface Membership {
   email: string;
@@ -20,7 +25,7 @@ export interface Membership {
 export async function checkMembership(email: string): Promise<Membership | null> {
   if (!email) return null;
 
-  const { data } = await membershipClient
+  const { data } = await getMembershipClient()
     .from("memberships")
     .select("*")
     .eq("email", email.toLowerCase())
@@ -33,7 +38,7 @@ export async function checkMembership(email: string): Promise<Membership | null>
     const expiry = new Date(data.pro_until);
     if (expiry < new Date()) {
       // Expired — downgrade to free
-      await membershipClient
+      await getMembershipClient()
         .from("memberships")
         .update({ plan: "free", updated_at: new Date().toISOString() })
         .eq("email", email.toLowerCase());
@@ -54,7 +59,7 @@ export async function upsertMembership(
   pro_until?: string,
   stripe_customer_id?: string
 ): Promise<void> {
-  await membershipClient.from("memberships").upsert(
+  await getMembershipClient().from("memberships").upsert(
     {
       email: email.toLowerCase(),
       plan,
@@ -74,14 +79,14 @@ export async function ensureMembership(
   email: string,
   source: string
 ): Promise<void> {
-  const { data } = await membershipClient
+  const { data } = await getMembershipClient()
     .from("memberships")
     .select("id")
     .eq("email", email.toLowerCase())
     .single();
 
   if (!data) {
-    await membershipClient.from("memberships").insert({
+    await getMembershipClient().from("memberships").insert({
       email: email.toLowerCase(),
       plan: "free",
       source,
