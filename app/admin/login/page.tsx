@@ -1,14 +1,17 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, useRef, FormEvent } from "react";
 import { createBrowserClient } from "@supabase/ssr";
 import { useRouter } from "next/navigation";
+import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
 
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState("");
+  const turnstileRef = useRef<TurnstileInstance>(null);
   const router = useRouter();
 
   const supabase = createBrowserClient(
@@ -24,7 +27,11 @@ export default function AdminLogin() {
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
+      options: { captchaToken },
     });
+
+    setCaptchaToken("");
+    turnstileRef.current?.reset();
 
     if (error) {
       setError(error.message);
@@ -60,7 +67,14 @@ export default function AdminLogin() {
             required
           />
           {error && <p className="admin-error">{error}</p>}
-          <button type="submit" className="btn-primary admin-submit" disabled={loading}>
+          <Turnstile
+            ref={turnstileRef}
+            siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+            onSuccess={setCaptchaToken}
+            onExpire={() => setCaptchaToken("")}
+            options={{ theme: "dark", size: "flexible" }}
+          />
+          <button type="submit" className="btn-primary admin-submit" disabled={loading || !captchaToken}>
             {loading ? "Signing in..." : "Sign In"}
           </button>
         </form>
