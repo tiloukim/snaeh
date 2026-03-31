@@ -99,13 +99,10 @@ export default function SwipeCard({
     )}
     <div className={`swipe-card ${exitDir ? `swipe-exit-${exitDir}` : ""}`}>
       <div className="swipe-card-photo">
-        {current.photo_url ? (
-          <img src={current.photo_url} alt={current.name} />
-        ) : (
-          <div className="swipe-card-placeholder">
-            <span>&#128100;</span>
-          </div>
-        )}
+        <img
+          src={current.photo_url || (current.gender === "female" ? "/default-female.png" : "/default-male.png")}
+          alt={current.name}
+        />
       </div>
       <div className="swipe-card-info">
         <h2 className="swipe-card-name">

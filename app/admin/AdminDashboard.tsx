@@ -237,15 +237,11 @@ export default function AdminDashboard({
                   <tr key={user.id}>
                     <td>{i + 1}</td>
                     <td>
-                      {user.photo_url ? (
-                        <img
-                          src={user.photo_url}
-                          alt={user.name ?? ""}
-                          className="admin-user-avatar"
-                        />
-                      ) : (
-                        <div className="admin-user-avatar-placeholder">?</div>
-                      )}
+                      <img
+                        src={user.photo_url || (user.gender === "female" ? "/default-female.png" : "/default-male.png")}
+                        alt={user.name ?? ""}
+                        className="admin-user-avatar"
+                      />
                     </td>
                     <td className="admin-user-name">{user.name ?? "—"}</td>
                     <td>{user.age ?? "—"}</td>
@@ -321,15 +317,11 @@ export default function AdminDashboard({
                   <tr key={user.id}>
                     <td>{i + 1}</td>
                     <td>
-                      {user.photo_url ? (
-                        <img
-                          src={user.photo_url}
-                          alt={user.name ?? ""}
-                          className="admin-user-avatar"
-                        />
-                      ) : (
-                        <div className="admin-user-avatar-placeholder">?</div>
-                      )}
+                      <img
+                        src={user.photo_url || (user.gender === "female" ? "/default-female.png" : "/default-male.png")}
+                        alt={user.name ?? ""}
+                        className="admin-user-avatar"
+                      />
                     </td>
                     <td className="admin-user-name">{user.name ?? "—"}</td>
                     <td>{user.age ?? "—"}</td>

@@ -27,11 +27,10 @@ export default function MatchList({ items }: { items: MatchItem[] }) {
           className="match-item"
         >
           <div className="match-item-photo">
-            {item.photo_url ? (
-              <img src={item.photo_url} alt={item.name} />
-            ) : (
-              <span className="match-item-placeholder">&#128100;</span>
-            )}
+            <img
+              src={item.photo_url || "/default-male.png"}
+              alt={item.name}
+            />
           </div>
           <div className="match-item-info">
             <span className="match-item-name">{item.name}</span>
