@@ -57,6 +57,9 @@ export default function AdminDashboard({
   const [genderFilter, setGenderFilter] = useState<string>("all");
   const [pendingList, setPendingList] = useState(initialPending);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
+  const [editingUser, setEditingUser] = useState<UserProfile | null>(null);
+  const [editForm, setEditForm] = useState<Record<string, string>>({});
+  const [userList, setUserList] = useState(users);
   const router = useRouter();
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -80,6 +83,65 @@ export default function AdminDashboard({
       if (res.ok) {
         setPendingList((prev) => prev.filter((u) => u.id !== userId));
         router.refresh();
+      }
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
+  const handleDelete = async (userId: string, userName: string) => {
+    if (!confirm(`Are you sure you want to permanently delete ${userName || "this user"}? This cannot be undone.`)) return;
+    setActionLoading(userId);
+    try {
+      const res = await fetch("/api/admin/delete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId }),
+      });
+      if (res.ok) {
+        setUserList((prev) => prev.filter((u) => u.id !== userId));
+        setPendingList((prev) => prev.filter((u) => u.id !== userId));
+      } else {
+        alert("Failed to delete user");
+      }
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
+  const handleEdit = (user: UserProfile) => {
+    setEditingUser(user);
+    setEditForm({
+      name: user.name || "",
+      age: String(user.age || ""),
+      gender: user.gender || "",
+      bio: user.bio || "",
+      country: user.country || "",
+      province: user.province || "",
+      looking_for: user.looking_for || "",
+      status: user.status || "pending",
+    });
+  };
+
+  const handleEditSave = async () => {
+    if (!editingUser) return;
+    setActionLoading(editingUser.id);
+    try {
+      const updates: Record<string, unknown> = { ...editForm };
+      if (editForm.age) updates.age = Number(editForm.age);
+      const res = await fetch("/api/admin/edit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: editingUser.id, updates }),
+      });
+      if (res.ok) {
+        setUserList((prev) =>
+          prev.map((u) => u.id === editingUser.id ? { ...u, ...updates } as UserProfile : u)
+        );
+        setEditingUser(null);
+        router.refresh();
+      } else {
+        alert("Failed to save changes");
       }
     } finally {
       setActionLoading(null);
@@ -115,7 +177,7 @@ export default function AdminDashboard({
     URL.revokeObjectURL(url);
   }
 
-  const filteredUsers = users.filter((u) => {
+  const filteredUsers = userList.filter((u) => {
     const matchesSearch =
       !search ||
       (u.name ?? "").toLowerCase().includes(search.toLowerCase()) ||
@@ -126,8 +188,8 @@ export default function AdminDashboard({
     return matchesSearch && matchesGender;
   });
 
-  const maleCount = users.filter((u) => u.gender === "male").length;
-  const femaleCount = users.filter((u) => u.gender === "female").length;
+  const maleCount = userList.filter((u) => u.gender === "male").length;
+  const femaleCount = userList.filter((u) => u.gender === "female").length;
 
   return (
     <div className="admin-container">
@@ -148,7 +210,7 @@ export default function AdminDashboard({
       {/* Stats */}
       <div className="admin-stats">
         <div className="admin-stat-card">
-          <span className="admin-stat-num">{users.length}</span>
+          <span className="admin-stat-num">{userList.length}</span>
           <span className="admin-stat-label">Total Users</span>
         </div>
         <div className="admin-stat-card">
@@ -171,7 +233,7 @@ export default function AdminDashboard({
           onClick={() => setTab("users")}
           className={`admin-tab ${tab === "users" ? "admin-tab-active" : ""}`}
         >
-          Users ({users.length})
+          Users ({userList.length})
         </button>
         <button
           onClick={() => setTab("pending")}
@@ -260,24 +322,61 @@ export default function AdminDashboard({
                     <td>{user.looking_for ?? "—"}</td>
                     <td>{user.updated_at ? new Date(user.updated_at).toLocaleDateString() : "—"}</td>
                     <td>
-                      {user.status === "approved" && (
+                      <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
                         <button
-                          className="admin-action-btn admin-action-suspend"
-                          onClick={() => handleStatusChange(user.id, "suspended")}
+                          className="admin-action-btn"
+                          style={{ background: "#3b82f6", color: "#fff" }}
+                          onClick={() => handleEdit(user)}
                           disabled={actionLoading === user.id}
                         >
-                          Suspend
+                          Edit
                         </button>
-                      )}
-                      {user.status === "suspended" && (
+                        {user.status === "approved" && (
+                          <>
+                            <button
+                              className="admin-action-btn admin-action-suspend"
+                              onClick={() => handleStatusChange(user.id, "suspended")}
+                              disabled={actionLoading === user.id}
+                            >
+                              Suspend
+                            </button>
+                            <button
+                              className="admin-action-btn"
+                              style={{ background: "#f59e0b", color: "#fff" }}
+                              onClick={() => handleStatusChange(user.id, "rejected")}
+                              disabled={actionLoading === user.id}
+                            >
+                              Reject
+                            </button>
+                          </>
+                        )}
+                        {user.status === "suspended" && (
+                          <button
+                            className="admin-action-btn admin-action-approve"
+                            onClick={() => handleStatusChange(user.id, "approved")}
+                            disabled={actionLoading === user.id}
+                          >
+                            Unsuspend
+                          </button>
+                        )}
+                        {user.status === "rejected" && (
+                          <button
+                            className="admin-action-btn admin-action-approve"
+                            onClick={() => handleStatusChange(user.id, "approved")}
+                            disabled={actionLoading === user.id}
+                          >
+                            Approve
+                          </button>
+                        )}
                         <button
-                          className="admin-action-btn admin-action-approve"
-                          onClick={() => handleStatusChange(user.id, "approved")}
+                          className="admin-action-btn"
+                          style={{ background: "#dc2626", color: "#fff" }}
+                          onClick={() => handleDelete(user.id, user.name || "")}
                           disabled={actionLoading === user.id}
                         >
-                          Unsuspend
+                          Delete
                         </button>
-                      )}
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -406,6 +505,89 @@ export default function AdminDashboard({
             </table>
           </div>
         </>
+      )}
+      {/* Edit User Modal */}
+      {editingUser && (
+        <div style={{
+          position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", display: "flex",
+          alignItems: "center", justifyContent: "center", zIndex: 1000,
+        }} onClick={() => setEditingUser(null)}>
+          <div style={{
+            background: "#fff", borderRadius: 16, padding: 28, width: "90%", maxWidth: 480,
+            maxHeight: "90vh", overflow: "auto",
+          }} onClick={(e) => e.stopPropagation()}>
+            <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 20, color: "#1a1a2e" }}>
+              Edit User: {editingUser.name || "Unknown"}
+            </h3>
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              <label style={{ fontSize: 13, fontWeight: 600, color: "#666" }}>
+                Name
+                <input type="text" value={editForm.name || ""} onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+                  style={{ width: "100%", padding: "8px 12px", borderRadius: 8, border: "1px solid #ddd", fontSize: 14, marginTop: 4 }} />
+              </label>
+              <label style={{ fontSize: 13, fontWeight: 600, color: "#666" }}>
+                Age
+                <input type="number" value={editForm.age || ""} onChange={(e) => setEditForm({ ...editForm, age: e.target.value })}
+                  style={{ width: "100%", padding: "8px 12px", borderRadius: 8, border: "1px solid #ddd", fontSize: 14, marginTop: 4 }} />
+              </label>
+              <label style={{ fontSize: 13, fontWeight: 600, color: "#666" }}>
+                Gender
+                <select value={editForm.gender || ""} onChange={(e) => setEditForm({ ...editForm, gender: e.target.value })}
+                  style={{ width: "100%", padding: "8px 12px", borderRadius: 8, border: "1px solid #ddd", fontSize: 14, marginTop: 4 }}>
+                  <option value="">—</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+              </label>
+              <label style={{ fontSize: 13, fontWeight: 600, color: "#666" }}>
+                Bio
+                <textarea value={editForm.bio || ""} onChange={(e) => setEditForm({ ...editForm, bio: e.target.value })} rows={3}
+                  style={{ width: "100%", padding: "8px 12px", borderRadius: 8, border: "1px solid #ddd", fontSize: 14, marginTop: 4, resize: "vertical" }} />
+              </label>
+              <label style={{ fontSize: 13, fontWeight: 600, color: "#666" }}>
+                Country
+                <input type="text" value={editForm.country || ""} onChange={(e) => setEditForm({ ...editForm, country: e.target.value })}
+                  style={{ width: "100%", padding: "8px 12px", borderRadius: 8, border: "1px solid #ddd", fontSize: 14, marginTop: 4 }} />
+              </label>
+              <label style={{ fontSize: 13, fontWeight: 600, color: "#666" }}>
+                Province
+                <input type="text" value={editForm.province || ""} onChange={(e) => setEditForm({ ...editForm, province: e.target.value })}
+                  style={{ width: "100%", padding: "8px 12px", borderRadius: 8, border: "1px solid #ddd", fontSize: 14, marginTop: 4 }} />
+              </label>
+              <label style={{ fontSize: 13, fontWeight: 600, color: "#666" }}>
+                Looking For
+                <select value={editForm.looking_for || ""} onChange={(e) => setEditForm({ ...editForm, looking_for: e.target.value })}
+                  style={{ width: "100%", padding: "8px 12px", borderRadius: 8, border: "1px solid #ddd", fontSize: 14, marginTop: 4 }}>
+                  <option value="">—</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="everyone">Everyone</option>
+                </select>
+              </label>
+              <label style={{ fontSize: 13, fontWeight: 600, color: "#666" }}>
+                Status
+                <select value={editForm.status || ""} onChange={(e) => setEditForm({ ...editForm, status: e.target.value })}
+                  style={{ width: "100%", padding: "8px 12px", borderRadius: 8, border: "1px solid #ddd", fontSize: 14, marginTop: 4 }}>
+                  <option value="pending">Pending</option>
+                  <option value="approved">Approved</option>
+                  <option value="rejected">Rejected</option>
+                  <option value="suspended">Suspended</option>
+                </select>
+              </label>
+            </div>
+            <div style={{ display: "flex", gap: 10, marginTop: 20, justifyContent: "flex-end" }}>
+              <button onClick={() => setEditingUser(null)}
+                style={{ padding: "8px 20px", borderRadius: 8, border: "1px solid #ddd", background: "#fff", cursor: "pointer", fontSize: 14 }}>
+                Cancel
+              </button>
+              <button onClick={handleEditSave} disabled={actionLoading === editingUser.id}
+                style={{ padding: "8px 20px", borderRadius: 8, border: "none", background: "#E8454A", color: "#fff", cursor: "pointer", fontSize: 14, fontWeight: 600 }}>
+                {actionLoading === editingUser.id ? "Saving..." : "Save Changes"}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
