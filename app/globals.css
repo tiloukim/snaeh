@@ -877,6 +877,15 @@ footer.footer-centered {
   border-bottom: 1px solid rgba(255,255,255,0.04);
 }
 .admin-table tr:hover td { background: rgba(255,255,255,0.02); }
+.admin-table th:last-child,
+.admin-table td:last-child {
+  position: sticky;
+  right: 0;
+  background: var(--bg-dark, #1a1a2e);
+  z-index: 1;
+  min-width: 180px;
+}
+.admin-table tr:hover td:last-child { background: #1e1e35; }
 
 /* Admin tabs */
 .admin-tabs {
