@@ -60,6 +60,7 @@ export default function AdminDashboard({
   const [editingUser, setEditingUser] = useState<UserProfile | null>(null);
   const [editForm, setEditForm] = useState<Record<string, string>>({});
   const [userList, setUserList] = useState(users);
+  const [photoMenuUser, setPhotoMenuUser] = useState<string | null>(null);
   const router = useRouter();
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -145,6 +146,33 @@ export default function AdminDashboard({
       }
     } finally {
       setActionLoading(null);
+    }
+  };
+
+  const handlePhotoAction = async (userId: string, action: "hide" | "delete") => {
+    const label = action === "hide" ? "hide (replace with default)" : "permanently delete";
+    if (!confirm(`Are you sure you want to ${label} this user's photo?`)) return;
+    setActionLoading(userId);
+    try {
+      const newUrl = null;
+      const res = await fetch("/api/admin/edit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, updates: { photo_url: newUrl } }),
+      });
+      if (res.ok) {
+        setUserList((prev) =>
+          prev.map((u) => u.id === userId ? { ...u, photo_url: null } : u)
+        );
+        setPendingList((prev) =>
+          prev.map((u) => u.id === userId ? { ...u, photo_url: null } : u)
+        );
+      } else {
+        alert("Failed to update photo");
+      }
+    } finally {
+      setActionLoading(null);
+      setPhotoMenuUser(null);
     }
   };
 
@@ -298,12 +326,46 @@ export default function AdminDashboard({
                 {filteredUsers.map((user, i) => (
                   <tr key={user.id}>
                     <td>{i + 1}</td>
-                    <td>
+                    <td style={{ position: "relative" }}>
                       <img
                         src={user.photo_url || (user.gender === "female" ? "/default-female.png" : "/default-male.png")}
                         alt={user.name ?? ""}
                         className="admin-user-avatar"
+                        style={{ cursor: user.photo_url ? "pointer" : "default" }}
+                        onClick={() => user.photo_url && setPhotoMenuUser(photoMenuUser === user.id ? null : user.id)}
                       />
+                      {photoMenuUser === user.id && user.photo_url && (
+                        <div style={{
+                          position: "absolute", top: 48, left: 0, zIndex: 10,
+                          background: "#2a2a4a", borderRadius: 8, padding: 4,
+                          boxShadow: "0 4px 16px rgba(0,0,0,0.4)", minWidth: 140,
+                        }}>
+                          <button
+                            onClick={() => { window.open(user.photo_url!, "_blank"); setPhotoMenuUser(null); }}
+                            style={{ display: "block", width: "100%", padding: "8px 12px", background: "none", border: "none", color: "#fff", fontSize: 13, textAlign: "left", cursor: "pointer", borderRadius: 6 }}
+                            onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.1)")}
+                            onMouseLeave={(e) => (e.currentTarget.style.background = "none")}
+                          >
+                            View Full Photo
+                          </button>
+                          <button
+                            onClick={() => handlePhotoAction(user.id, "hide")}
+                            style={{ display: "block", width: "100%", padding: "8px 12px", background: "none", border: "none", color: "#f59e0b", fontSize: 13, textAlign: "left", cursor: "pointer", borderRadius: 6 }}
+                            onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.1)")}
+                            onMouseLeave={(e) => (e.currentTarget.style.background = "none")}
+                          >
+                            Hide Photo
+                          </button>
+                          <button
+                            onClick={() => handlePhotoAction(user.id, "delete")}
+                            style={{ display: "block", width: "100%", padding: "8px 12px", background: "none", border: "none", color: "#dc2626", fontSize: 13, textAlign: "left", cursor: "pointer", borderRadius: 6 }}
+                            onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.1)")}
+                            onMouseLeave={(e) => (e.currentTarget.style.background = "none")}
+                          >
+                            Delete Photo
+                          </button>
+                        </div>
+                      )}
                     </td>
                     <td className="admin-user-name">{user.name ?? "—"}</td>
                     <td>{user.age ?? "—"}</td>

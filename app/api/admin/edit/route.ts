@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import { getSupabaseAdmin } from "@/lib/supabase/admin";
 
-const ALLOWED_FIELDS = ["name", "age", "gender", "bio", "country", "province", "city", "zipcode", "looking_for", "status", "zodiac", "date_of_birth"];
+const ALLOWED_FIELDS = ["name", "age", "gender", "bio", "country", "province", "city", "zipcode", "looking_for", "status", "zodiac", "date_of_birth", "photo_url"];
 
 export async function POST(request: NextRequest) {
   const supabase = createServerClient(
